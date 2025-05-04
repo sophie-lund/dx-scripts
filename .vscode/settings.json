@@ -1,0 +1,24 @@
+{
+    "editor.rulers": [
+        100
+    ],
+    "shellcheck.customArgs": [
+        "-o",
+        "all"
+    ],
+    "cSpell.words": [
+        "ASAN",
+        "cocoapods",
+        "ensurepath",
+        "esac",
+        "genhtml",
+        "mkdocs",
+        "nvmrc",
+        "pipx",
+        "pulumi",
+        "shellcheck",
+        "superproject",
+        "toplevel",
+        "trunc"
+    ]
+}

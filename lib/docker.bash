@@ -1,0 +1,389 @@
+#!/bin/bash
+
+# Copyright 2025 Sophie Lund
+#
+# This file is part of Sophie's DX Scripts.
+#
+# Sophie's DX Scripts is free software: you can redistribute it and/or modify it under the terms of
+# the GNU General Public License as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# Sophie's DX Scripts is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with Sophie's DX Scripts.
+# If not, see <https://www.gnu.org/licenses/>.
+
+# Standard prelude - put this at the top of all scripts
+# --------------------------------------------------------------------------------------------------
+
+# Get the directory of the current script
+SCRIPT_DIRECTORY_DOCKER="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+readonly SCRIPT_DIRECTORY_DOCKER
+
+# Set flags
+set -o errexit # abort on nonzero exit status
+set -o nounset # abort on unbound variable
+set -o pipefail # don't hide errors within pipes
+
+# Ensure that the script is sourced, not being run in its own shell
+if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
+    printf "error: script must be sourced\n"
+    exit 1
+fi
+
+# Source dependencies
+# --------------------------------------------------------------------------------------------------
+
+# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
+
+[[ -z "${SCRIPT_DIRECTORY_UTILITIES:-}" ]] && . "${SCRIPT_DIRECTORY_DOCKER}/utilities.bash"
+[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_DOCKER}/logging.bash"
+[[ -z "${SCRIPT_DIRECTORY_PROMPTS:-}" ]] && . "${SCRIPT_DIRECTORY_DOCKER}/prompts.bash"
+
+# Private functions
+# --------------------------------------------------------------------------------------------------
+
+# These should all be prefixed with '_'
+
+# Formats the status of the Docker Compose project as a table to stdout.
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+function _format_docker_compose_status {
+    local docker_compose_relative_path="${1}"
+
+    printf "\033[0;90m┌──────────────────────────────────────────┬────────────┬───────────┬───────────┬──────────────────────────────────────┐\033[0;0m\n"
+    printf "\033[0;90m│\033[1;37m Service                                  \033[0;90m│\033[1;37m State      \033[0;90m│\033[1;37m Exit code \033[0;90m│\033[1;37m Health    \033[0;90m│\033[1;37m Message                              \033[0;90m│\033[0;0m\n"
+    printf "\033[0;90m├──────────────────────────────────────────┼────────────┼───────────┼───────────┼──────────────────────────────────────┤\033[0;0m\n"
+
+    run_docker_compose "${docker_compose_relative_path}" ps --all --format json --no-trunc |
+        while IFS= read -r line; do
+            # The name of the service - 40 characters max
+            service="$(echo "${line}" | jq -r .Service)"
+
+            # The status of the service - the longest is 'restarting' at 10 characters
+            state="$(echo "${line}" | jq -r .State)"
+
+            # The exit code - 9 characters for the header
+            exit_code="$(echo "${line}" | jq -r .ExitCode)"
+
+            # A status message - 15 characters max
+            status="$(echo "${line}" | jq -r .Status)"
+
+            health="$(echo "${line}" | jq -r .Health)"
+            
+            if [[ "${#status}" -gt 36 ]]; then
+                status="$(echo "${status}" | cut -c 1-33)..."
+            fi
+
+            state_color=""
+            case "${state}" in
+                "created")
+                    state_color="\033[0;34m"
+                    ;;
+                "dead")
+                    state_color="\033[0;31m"
+                    ;;
+                "exited")
+                    if [[ "${exit_code}" -eq "0" ]]; then
+                        state_color="\033[0;32m"
+                    else
+                        state_color="\033[0;31m"
+                    fi
+                    ;;
+                "paused")
+                    state_color="\033[0;33m"
+                    ;;
+                "restarting")
+                    state_color="\033[0;34m"
+                    ;;
+                "running")
+                    state_color="\033[0;32m"
+                    ;;
+                *)
+                    ;;
+            esac
+
+            exit_code_color=""
+            case "${exit_code}" in
+                "0")
+                    exit_code_color="\033[0;32m"
+                    ;;
+                *)
+                    exit_code_color="\033[0;31m"
+                    ;;
+            esac
+
+            health_color=""
+            case "${health}" in
+                "healthy")
+                    health_color="\033[0;32m"
+                    ;;
+                "starting")
+                    health_color="\033[0;34m"
+                    ;;
+                *)
+                    health_color="\033[0;31m"
+                    ;;
+            esac
+
+            printf "\033[0;90m│\033[0;0m %-40s \033[0;90m│ ${state_color}%-10s \033[0;90m│ ${exit_code_color}%-9s \033[0;90m│ ${health_color}%-9s \033[0;90m│ %-36s \033[0;90m│\033[0;0m\n" "${service}" "${state}" "${exit_code}" "${health}" "${status}"
+        done
+
+    printf "\033[0;90m└──────────────────────────────────────────┴────────────┴───────────┴───────────┴──────────────────────────────────────┘\033[0;0m\n"
+}
+
+# Public functions
+# --------------------------------------------------------------------------------------------------
+
+# Runs Docker Compose but with some flags set to ensure safe behavior and that the correct project
+# is selected.
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   *                            -- The arguments to pass to Docker Compose
+function run_docker_compose {
+    local current_project_directory
+    current_project_directory="$(get_current_project_directory)"
+
+    local docker_compose_path="${current_project_directory}/${1}"
+
+    local env_path
+    env_path="${current_project_directory}/${DX_SCRIPTS_ENV_FILENAME:-".env"}"
+
+    if ! grep -qiE '^COMPOSE_PROJECT_NAME=' "${env_path}"; then
+        die "COMPOSE_PROJECT_NAME is not set in '${env_path}' - please add it to prevent conflicts with other Docker compose projects"
+    fi
+
+    (
+        cd "${current_project_directory}" &&
+        docker compose \
+            --file "${docker_compose_path}" \
+            --env-file "${env_path}" \
+            "${@:2}"
+    )
+}
+
+# Checks if the Docker Compose project is running.
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#
+# Return codes:
+#   0 -- The Docker Compose project is running
+#   1 -- The Docker Compose project is not running
+function is_docker_compose_project_running {
+    local docker_compose_relative_path="${1}"
+
+    # shellcheck disable=SC2310
+    if [[ -n "$(run_docker_compose "${docker_compose_relative_path}" ps --quiet || true)" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Cleans up Docker volumes that match the given prefix
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   prefix                       -- The prefix to match against the volume names
+#
+# Return codes:
+#   1 -- The Docker Compose project is still running and needs to be stopped first
+function docker_clean_volumes {
+    local docker_compose_relative_path="${1}"
+    local prefix="${2}"
+
+    # Make sure the project is not running
+    if is_docker_compose_project_running "${docker_compose_relative_path}"; then
+        log_error "Docker Compose project is running - please stop it before cleaning up volumes"
+        return 1
+    fi
+
+    # Get the list of volumes to remove
+    if ! capture_command_output docker volume ls --filter "name=${prefix}*" --quiet; then
+        # This is set by capture_command_output
+        # shellcheck disable=SC2154
+        return "${CAPTURE_EXIT_STATUS}"
+    fi
+
+    local volumes_to_remove
+    # This is set by capture_command_output
+    # shellcheck disable=SC2154
+    volumes_to_remove="${CAPTURE_STDOUT}"
+
+    # Confirm with the user
+    log_info "The following Docker volumes will be removed:"
+
+    printf "%s" "${volumes_to_remove}" | while read -r volume_name; do
+        log_info "  ${volume_name}"
+    done
+
+    confirm_user_consent_safe "Are you sure you want to remove them?"
+
+    # Remove them
+    printf "%s" "${volumes_to_remove}" | while read -r volume_name; do
+        log_info "Removing Docker volume '${volume_name}'..."
+        docker volume rm -f "${volume_name}"
+    done
+}
+
+# Runs Docker Compose to bring down containers with an optional name
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   container name (optional)    -- The name of the container to bring down, or all containers if
+#                                   not specified
+function docker_compose_down {
+    local docker_compose_relative_path="${1}"
+    local container_name="${2:-}"
+
+    if [[ -z "${container_name}" ]]; then
+        log_info "Bringing down all Docker containers..."
+        run_docker_compose "${docker_compose_relative_path}" down --remove-orphans
+    else
+        log_info "Bringing down Docker container '${container_name}'..."
+        run_docker_compose "${docker_compose_relative_path}" down --remove-orphans "${container_name}"
+    fi
+}
+
+# Runs Docker Compose to bring up containers with an optional name
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   container name (optional)    -- The name of the container to bring up, or all containers if not
+#                                   specified
+function docker_compose_up {
+    local docker_compose_relative_path="${1}"
+    local container_name="${2:-}"
+
+    log_info "Pulling Docker images..."
+
+    run_docker_compose "${docker_compose_relative_path}" pull
+
+    log_info "Building Docker images..."
+
+    run_docker_compose "${docker_compose_relative_path}" build
+    
+    if [[ -z "${container_name}" ]]; then
+        log_info "Bringing up all Docker containers..."
+        run_docker_compose "${docker_compose_relative_path}" up --detach
+    else
+        log_info "Bringing up Docker container '${container_name}'..."
+        run_docker_compose "${docker_compose_relative_path}" up --detach "${container_name}"
+    fi
+}
+
+# Restarts the Docker Compose project by bringing it down and then back up
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   container name (optional)    -- The name of the container to restart, or all containers if not
+#                                   specified
+function docker_compose_restart {
+    local docker_compose_relative_path="${1}"
+    local container_name="${2:-}"
+
+    docker_compose_down "${docker_compose_relative_path}" "${container_name}"
+    docker_compose_up "${docker_compose_relative_path}" "${container_name}"
+}
+
+# Tails the logs of a Docker Compose project
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   container name (optional)    -- The name of the container to tail logs for, or all containers if
+#                                   not specified
+function tail_docker_compose_logs {
+    local docker_compose_relative_path="${1}"
+    local container_name="${2:-}"
+
+    if [[ -z "${container_name}" ]]; then
+        log_info "Tailing logs for all Docker containers..."
+        run_docker_compose "${docker_compose_relative_path}" logs --follow
+    else
+        log_info "Tailing logs for Docker container '${container_name}'..."
+        run_docker_compose "${docker_compose_relative_path}" logs --follow "${container_name}"
+    fi
+}
+
+# Executes an interactive shell in a Docker Compose container
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+#   container name               -- The name of the container to execute in
+#   command (optional)           -- An optional command to run in the shell via '-c'
+function exec_docker_compose_shell {
+    local docker_compose_relative_path="${1}"
+    local container_name="${2}"
+    local command="${3:-}"
+
+    if run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" 'test -f /bin/bash'; then
+        # Run BASH if we have it
+        if [[ -z "${command}" ]]; then
+            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/bash
+        else
+            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/bash -c "${command}"
+        fi
+    else
+        # Otherwise, fall back to whatever /bin/sh is
+        if [[ -z "${command}" ]]; then
+            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/sh
+        else
+            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/sh -c "${command}"
+        fi
+    fi
+}
+
+# Prints the status of the Docker Compose project as a table to stdout.
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+function print_docker_compose_status {
+    local docker_compose_relative_path="${1}"
+
+    if [[ "$(tput cols)" -lt 100 ]]; then
+        die_error "Please resize your terminal to at least 100 columns wide"
+    fi
+
+    # We do this so that it doesn't print slowly
+    local output
+    output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
+
+    printf "%b" "${output}"
+}
+
+# Watches the status of the Docker Compose project as a table to stdout by refreshing it regularly.
+#
+# Arguments:
+#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
+#                                   project directory
+function watch_docker_compose_status {
+    local docker_compose_relative_path="${1}"
+
+    if [[ "$(tput cols || printf "0" || true)" -lt 100 ]]; then
+        die_error "Please resize your terminal to at least 100 columns wide"
+    fi
+
+    local output
+
+    while true; do
+        output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
+        clear
+        printf "%b\n\033[0;90mLast updated %s (updates every 5 seconds)\033[0;0m" "${output}" "$(date "+%H:%M:%S %Z" || true)"
+        sleep 5
+    done
+}

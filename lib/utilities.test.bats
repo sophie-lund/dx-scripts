@@ -1,0 +1,115 @@
+#!/usr/bin/env bats
+
+# Copyright 2025 Sophie Lund
+#
+# This file is part of Sophie's DX Scripts.
+#
+# Sophie's DX Scripts is free software: you can redistribute it and/or modify it under the terms of
+# the GNU General Public License as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# Sophie's DX Scripts is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with Sophie's DX Scripts.
+# If not, see <https://www.gnu.org/licenses/>.
+
+. "./lib/utilities.bash"
+
+function setup {
+    load "../external/bats-support/load.bash"
+    load "../external/bats-assert/load.bash"
+}
+
+@test "print_output_on_error > success" {
+    run print_output_on_error ls /
+
+    assert_success
+    assert_output ""
+}
+
+@test "print_output_on_error > error, no output" {
+    run print_output_on_error exit 1
+
+    assert_failure
+    assert_output ""
+}
+
+@test "print_output_on_error > error, with stdout" {
+    run print_output_on_error bash -c 'printf 'dummy' && exit 1'
+
+    assert_failure
+    assert_output "dummy"
+}
+
+@test "print_output_on_error > error, with stderr" {
+    run print_output_on_error bash -c 'printf 'dummy' >&2 && exit 1'
+
+    assert_failure
+    assert_output "dummy"
+}
+
+@test "capture_command_output > success, no output" {
+    capture_command_output bash -c 'exit 0'
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 0
+    assert_equal "${CAPTURE_STDOUT}" ""
+}
+
+@test "capture_command_output > success, with stdout" {
+    capture_command_output printf 'dummy'
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 0
+    assert_equal "${CAPTURE_STDOUT}" "dummy"
+}
+
+@test "capture_command_output > success, with stderr" {
+    capture_command_output bash -c 'printf 'dummy' >&2'
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 0
+    assert_equal "${CAPTURE_STDOUT}" ""
+}
+
+@test "capture_command_output > failure, no output" {
+    set +e # this is needed unfortunately
+    capture_command_output bash -c 'exit 3'
+    set -e
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 3
+    assert_equal "${CAPTURE_STDOUT}" ""
+}
+
+@test "capture_command_output > failure, with stdout" {
+    set +e # this is needed unfortunately
+    capture_command_output bash -c 'printf 'dummy' && exit 3'
+    set -e
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 3
+    assert_equal "${CAPTURE_STDOUT}" "dummy"
+}
+
+@test "capture_command_output > failure, with stderr" {
+    set +e # this is needed unfortunately
+    capture_command_output bash -c 'printf 'dummy' >&2 && exit 3'
+    set -e
+
+    assert_equal "${CAPTURE_EXIT_STATUS}" 3
+    assert_equal "${CAPTURE_STDOUT}" ""
+}
+
+@test "get_current_project_directory > smoke" {
+    run get_current_project_directory
+
+    assert_success
+    assert_output "$(pwd)"
+}
+
+@test "get_current_project_directory > env override" {
+    export DX_SCRIPTS_PROJECT_DIRECTORY="/tmp"
+
+    run get_current_project_directory
+
+    assert_success
+    assert_output "/tmp"
+}
