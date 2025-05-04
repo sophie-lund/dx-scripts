@@ -59,6 +59,9 @@ fi
 #         "get-name")
 #             printf "<name>"
 #             ;;
+#         "dependencies")
+#             printf "<dependency1> <dependency2>"
+#             ;;
 #         "check-enabled")
 #             printf "true"
 #             ;;
@@ -80,6 +83,20 @@ fi
 #     esac
 # }
 function ensure_dependencies_installed {
+    # Check for dependency order
+    local dependencies_so_far=()
+    for dependency in "$@"; do
+        if [[ " ${dependencies_so_far[*]} " == *" ${dependency} "* ]]; then
+            die "Dependency '${dependency}' is listed multiple times"
+        fi
+
+        for sub_dependency in $(${dependency} list-dependencies); do
+            if [[ " ${dependencies_so_far[*]} " == *" ${sub_dependency} "* ]]; then
+                die "Dependency '${dependency}' depends on '${sub_dependency}' which was not listed before '${dependency}'"
+            fi
+        done
+    done
+
     # Filter dependencies to only those that are enabled
     local dependencies_filtered=()
     for dependency in "$@"; do

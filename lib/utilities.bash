@@ -33,6 +33,14 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
     exit 1
 fi
 
+# Source dependencies
+# --------------------------------------------------------------------------------------------------
+
+# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
+
+[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_UTILITIES}/logging.bash"
+[[ -z "${SCRIPT_DIRECTORY_PROMPTS:-}" ]] && . "${SCRIPT_DIRECTORY_UTILITIES}/prompts.bash"
+
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
@@ -121,12 +129,12 @@ function clean_git_ignored {
     fi
 
     local output
-    output="$(git clean -ndX)"
+    output="$(cd "${project_directory}" && git clean -ndX)"
 
     if [[ -n "${output}" ]]; then
         log_warning "The following files are ignored by Git and will be removed:"
 
-        printf "%s" "${output}" | while read -r line; do
+        printf "%s\n" "${output}" | while read -r line; do
             if [[ -z "${line}" ]]; then
                 continue
             fi
@@ -135,11 +143,15 @@ function clean_git_ignored {
                 line="${line#Would remove }"
             fi
 
-            printf "  %s\n" "${line}"
+            printf "  %q\n" "${line}"
         done
+
+        confirm_user_consent_dangerous "Are you sure you want to remove these files?"
+
+        (cd "${project_directory}" && git clean -qfdX)
+
+        log_info "Clean successful"
+    else
+        log_info "Nothing to clean"
     fi
-
-    confirm_user_consent_dangerous "Are you sure you want to remove these files?"
-
-    git clean -qfdX
 }

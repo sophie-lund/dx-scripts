@@ -50,6 +50,8 @@ function dependency_xcode_cli_tools {
         "get-name")
             printf "Xcode CLI tools"
             ;;
+        "list-dependencies")
+            ;;
         "check-enabled")
             if is_macos; then
                 printf "true"
@@ -83,6 +85,8 @@ function dependency_xcode {
     case "${1}" in
         "get-name")
             printf "Xcode desktop app"
+            ;;
+        "list-dependencies")
             ;;
         "check-enabled")
             if is_macos; then
@@ -118,6 +122,9 @@ function dependency_git {
         "get-name")
             printf "Git"
             ;;
+        "list-dependencies")
+            printf "dependency_xcode_cli_tools"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -147,6 +154,9 @@ function dependency_homebrew {
     case "${1}" in
         "get-name")
             printf "Homebrew"
+            ;;
+        "list-dependencies")
+            printf "dependency_xcode_cli_tools"
             ;;
         "check-enabled")
             if is_macos; then
@@ -182,6 +192,9 @@ function dependency_nvm {
         "get-name")
             printf "NVM"
             ;;
+        "list-dependencies")
+            printf "dependency_xcode_cli_tools"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -211,6 +224,9 @@ function dependency_node {
     case "${1}" in
         "get-name")
             printf "Node.JS"
+            ;;
+        "list-dependencies")
+            printf "dependency_nvm"
             ;;
         "check-enabled")
             printf "true"
@@ -247,6 +263,9 @@ function dependency_go {
         "get-name")
             printf "Go"
             ;;
+        "list-dependencies")
+            printf "dependency_xcode_cli_tools"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -276,6 +295,9 @@ function dependency_jq {
     case "${1}" in
         "get-name")
             printf "jq"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
             ;;
         "check-enabled")
             printf "true"
@@ -308,6 +330,9 @@ function dependency_pulumi {
         "get-name")
             printf "Pulumi"
             ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -338,6 +363,9 @@ function dependency_cocoapods {
     case "${1}" in
         "get-name")
             printf "Cocoapods"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
             ;;
         "check-enabled")
             if is_macos; then
@@ -373,6 +401,8 @@ function dependency_docker {
         "get-name")
             printf "Docker"
             ;;
+        "list-dependencies")
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -402,6 +432,9 @@ function dependency_aws_cli {
     case "${1}" in
         "get-name")
             printf "AWS CLI v2"
+            ;;
+        "list-dependencies")
+            printf "dependency_xcode_cli_tools"
             ;;
         "check-enabled")
             printf "true"
@@ -433,6 +466,9 @@ function dependency_cmake {
         "get-name")
             printf "CMake"
             ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -463,6 +499,9 @@ function dependency_pipx {
     case "${1}" in
         "get-name")
             printf "Pipx"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
             ;;
         "check-enabled")
             printf "true"
@@ -497,6 +536,9 @@ function dependency_conan {
         "get-name")
             printf "Conan"
             ;;
+        "list-dependencies")
+            printf "dependency_pipx"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -526,6 +568,9 @@ function dependency_doxygen {
     case "${1}" in
         "get-name")
             printf "Doxygen"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
             ;;
         "check-enabled")
             printf "true"
@@ -558,6 +603,9 @@ function dependency_mkdocs {
         "get-name")
             printf "MkDocs"
             ;;
+        "list-dependencies")
+            printf "dependency_pipx"
+            ;;
         "check-enabled")
             printf "true"
             ;;
@@ -587,6 +635,9 @@ function dependency_lcov {
     case "${1}" in
         "get-name")
             printf "LCOV"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
             ;;
         "check-enabled")
             printf "true"

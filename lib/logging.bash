@@ -148,6 +148,10 @@ function run_steps {
         esac
     done
 
+    if [[ ${#steps_filtered[@]} -eq 0 ]]; then
+        return 0
+    fi
+
     # Execute the steps
     local index=1
     for step in "${steps_filtered[@]}"; do
