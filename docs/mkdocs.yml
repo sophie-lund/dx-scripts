@@ -1,0 +1,57 @@
+# Copyright 2025 Sophie Lund
+#
+# This file is part of Forge.
+#
+# Forge is free software: you can redistribute it and/or modify it under the terms of the GNU
+# General Public License as published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Forge is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with Forge. If not, see
+# <https://www.gnu.org/licenses/>.
+
+site_name: DX Scripts
+repo_url: https://github.com/sophie-lund/dx-scripts
+repo_name: sophie-lund/dx-scripts
+
+docs_dir: book
+
+theme:
+    name: material
+    palette:
+        scheme: slate
+        primary: black
+        accent: blue
+    icon:
+        repo: fontawesome/brands/github
+    features:
+        - content.code.copy
+        - navigation.tabs
+
+extra_css:
+    - custom.css
+
+extra:
+    generator: false
+
+plugins:
+    - search
+
+markdown_extensions:
+    - pymdownx.highlight:
+          anchor_linenums: true
+          line_spans: __span
+          pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.details
+    - toc:
+          permalink: true
+    - admonition
+
+nav:
+    - Intro: index.md

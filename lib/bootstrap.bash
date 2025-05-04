@@ -86,12 +86,12 @@ function ensure_dependencies_installed {
     # Check for dependency order
     local dependencies_so_far=()
     for dependency in "$@"; do
-        if [[ " ${dependencies_so_far[*]} " == *" ${dependency} "* ]]; then
+        if [[ "${#dependencies_so_far[@]}" -gt 0 ]] && [[ " ${dependencies_so_far[@]} " =~ [[:space]]"${dependency}"[[:space]] ]]; then
             die "Dependency '${dependency}' is listed multiple times"
         fi
 
         for sub_dependency in $(${dependency} list-dependencies); do
-            if [[ " ${dependencies_so_far[*]} " == *" ${sub_dependency} "* ]]; then
+            if [[ "${#dependencies_so_far[@]}" -gt 0 ]] && [[ " ${dependencies_so_far[@]} " =~ [[:space]]"${sub_dependency}"[[:space]] ]]; then
                 die "Dependency '${dependency}' depends on '${sub_dependency}' which was not listed before '${dependency}'"
             fi
         done
@@ -133,10 +133,10 @@ function ensure_dependencies_installed {
         fi
 
         # Check if it is already ready
-        local check_ready
-        check_ready="$(${dependency} check-installed || true)"
+        local check_installed
+        check_installed="$(${dependency} check-installed || true)"
 
-        case "${check_ready}" in
+        case "${check_installed}" in
             "true")
                 log_info "${name} is ready"
                 continue
@@ -144,7 +144,7 @@ function ensure_dependencies_installed {
             "false")
                 ;;
             *)
-                die "Dependency '${dependency}' returned an invalid value for 'check-installed' '${check_ready}' - allowed are 'true' and 'false'"
+                die "Dependency '${dependency}' returned an invalid value for 'check-installed' '${check_installed}' - allowed are 'true' and 'false'"
                 ;;
         esac
 

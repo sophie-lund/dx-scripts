@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "timonwong.shellcheck",
-        "jetmartin.bats"
+        "jetmartin.bats",
+        "skellock.just"
     ]
 }

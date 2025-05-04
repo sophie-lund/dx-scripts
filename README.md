@@ -16,35 +16,10 @@ You can use these environment variables to configure the scripts' behavior:
 
 ## Setup
 
-Pull all submodules:
+Bootstrap the project by running this script:
 
 ```shell
-git submodule update --init --recursive
+./bootstrap.bash
 ```
 
-Install these dependencies:
-
-- [**ShellCheck**](https://www.shellcheck.net/):
-  - On macOS: `brew install shellcheck`
-
-## Testing
-
-Run this command to run the tests:
-
-```shell
-./external/bats-core/bin/bats lib
-```
-
-This will contain some tests that run slowly, so for fast iteration you may want to run:
-
-```shell
-./external/bats-core/bin/bats lib --filter-tags '!slow'
-```
-
-## Linting
-
-Run the following command to lint the code:
-
-```shell
-shellcheck lib/*.bash
-```
+Follow the instructions printed by the script to start development.

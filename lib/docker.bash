@@ -355,7 +355,7 @@ function exec_docker_compose_shell {
 function print_docker_compose_status {
     local docker_compose_relative_path="${1}"
 
-    if [[ "$(tput cols)" -lt 100 ]]; then
+    if [[ "$(tput cols || true)" -lt 100 ]]; then
         die_error "Please resize your terminal to at least 100 columns wide"
     fi
 

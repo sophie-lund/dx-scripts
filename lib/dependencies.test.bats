@@ -41,6 +41,8 @@ function setup {
         dependency_doxygen \
         dependency_mkdocs \
         dependency_lcov \
+        dependency_just \
+        dependency_shellcheck \
     ; do
         run "${dependency}" get-name
         assert_success

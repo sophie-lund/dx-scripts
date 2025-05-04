@@ -664,3 +664,71 @@ function dependency_lcov {
             ;;
     esac
 }
+
+function dependency_just {
+    case "${1}" in
+        "get-name")
+            printf "Just"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
+            ;;
+        "check-enabled")
+            printf "true"
+            ;;
+        "check-installed")
+            if does_command_exist just; then
+                printf "true"
+            else
+                printf "false"
+            fi
+            ;;
+        "get-install-command")
+            ;;
+        "get-brew-formula")
+            printf "just"
+            ;;
+        "get-fallback-instructions-url")
+            printf "https://github.com/casey/just?tab=readme-ov-file#packages"
+            ;;
+        "get-fallback-instructions")
+            ;;
+        *)
+            die "Unknown command for dependency: '${1}'"
+            ;;
+    esac
+}
+
+function dependency_shellcheck {
+    case "${1}" in
+        "get-name")
+            printf "ShellCheck"
+            ;;
+        "list-dependencies")
+            printf "dependency_homebrew"
+            ;;
+        "check-enabled")
+            printf "true"
+            ;;
+        "check-installed")
+            if does_command_exist shellcheck; then
+                printf "true"
+            else
+                printf "false"
+            fi
+            ;;
+        "get-install-command")
+            ;;
+        "get-brew-formula")
+            printf "shellcheck"
+            ;;
+        "get-fallback-instructions-url")
+            printf "https://github.com/koalaman/shellcheck#user-content-installing"
+            ;;
+        "get-fallback-instructions")
+            ;;
+        *)
+            die "Unknown command for dependency: '${1}'"
+            ;;
+    esac
+}

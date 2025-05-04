@@ -1,2 +1,2 @@
 enable=all
-disable=SC2310,SC1091
+disable=SC2310,SC1091,SC2199

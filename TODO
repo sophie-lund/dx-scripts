@@ -1,8 +1,8 @@
 Scripts:
   ✔ Add detection for duplicate dependencies @started(25-05-04 09:39) @done(25-05-04 09:46) @lasted(7m3s)
   ✔ Add checks for dependencies that require other dependencies @done(25-05-04 09:46)
-  ☐ Add MkDocs book
-  ☐ Improve test coverage @started(25-05-04 09:46)
-  ☐ Add Just
+  ☐ Add MkDocs book @started(25-05-04 10:45)
+  ✔ Improve test coverage @started(25-05-04 09:46) @done(25-05-04 10:40) @lasted(54m15s)
+  ✔ Add Just @done(25-05-04 11:33)
   ☐ Add GHA workflows
   ☐ Add instructions to test locally with a Docker container

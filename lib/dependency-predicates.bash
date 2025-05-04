@@ -135,7 +135,7 @@ function are_xcode_cli_tools_installed {
         die "This function is only supported on macOS"
     fi
 
-    if [[ -d "$(xcode-select -p > /dev/null 2>&1 || true)" ]]; then
+    if [[ -d "$(xcode-select -p 2>/dev/null || true)" ]]; then
         return 0
     else
         return 1
