@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along with DX 
 <https://www.gnu.org/licenses/>.
 -->
 
-#
+# Logging
 
-DX Scripts is a set of BASH scripts that automate common developer tasks. It's intended to be included as a submodule in your project and then used as a BASH "library".
+All of these
+
+## `log_info`

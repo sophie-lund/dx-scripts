@@ -75,8 +75,9 @@ function _install_conan_dependencies_release {
 }
 
 function _configure_cmake_debug {
-    local source_directory="${1}"
-    local build_directory="${2}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
 
     log_info "Configuring CMake build with build type Debug"
 
@@ -85,9 +86,9 @@ function _configure_cmake_debug {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        -DFORGE_BUILD_TESTS=on \
-        -DFORGE_BUILD_DEMOS=on \
-        -DFORGE_ENABLE_COVERAGE=off \
+        "-D${macro_prefix}_BUILD_TESTS=on" \
+        "-D${macro_prefix}_BUILD_DEMOS=on" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1
@@ -95,8 +96,9 @@ function _configure_cmake_debug {
 }
 
 function _configure_cmake_debug_coverage {
-    local source_directory="${1}"
-    local build_directory="${2}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
 
     log_info "Configuring CMake build with build type Debug and coverage enabled"
 
@@ -105,9 +107,9 @@ function _configure_cmake_debug_coverage {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        -DFORGE_BUILD_TESTS=on \
-        -DFORGE_BUILD_DEMOS=on \
-        -DFORGE_ENABLE_COVERAGE=on \
+        "-D${macro_prefix}_BUILD_TESTS=on" \
+        "-D${macro_prefix}_BUILD_DEMOS=on" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=on" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1
@@ -115,8 +117,9 @@ function _configure_cmake_debug_coverage {
 }
 
 function _configure_cmake_debug_fuzz {
-    local source_directory="${1}"
-    local build_directory="${2}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
 
     log_info "Configuring CMake build with build type Debug and fuzzing mode enabled"
 
@@ -125,9 +128,9 @@ function _configure_cmake_debug_fuzz {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        -DFORGE_BUILD_TESTS=on \
-        -DFORGE_BUILD_DEMOS=on \
-        -DFORGE_ENABLE_COVERAGE=off \
+        "-D${macro_prefix}_BUILD_TESTS=on" \
+        "-D${macro_prefix}_BUILD_DEMOS=on" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
         -DFUZZTEST_FUZZING_MODE=on \
         -G Ninja; then
         return 1
@@ -135,8 +138,9 @@ function _configure_cmake_debug_fuzz {
 }
 
 function _configure_cmake_release {
-    local source_directory="${1}"
-    local build_directory="${2}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
 
     log_info "Configuring CMake build with build type Release"
     
@@ -145,9 +149,9 @@ function _configure_cmake_release {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Release \
-        -DFORGE_BUILD_TESTS=off \
-        -DFORGE_BUILD_DEMOS=off \
-        -DFORGE_ENABLE_COVERAGE=off \
+        "-D${macro_prefix}_BUILD_TESTS=off" \
+        "-D${macro_prefix}_BUILD_DEMOS=off" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1
@@ -242,9 +246,10 @@ function _generate_coverage_report() {
 # --------------------------------------------------------------------------------------------------
 
 function build_cxx {
-    local source_directory="${1}"
-    local build_directory="${2}"
-    local build_mode="${3:-}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
+    local build_mode="${4:-}"
 
     if [[ -z "${build_mode}" ]]; then
         build_mode="$(_require_previous_build_mode "${build_directory}")"
@@ -255,19 +260,19 @@ function build_cxx {
     case "${build_mode}" in
         "debug")
             _install_conan_dependencies_debug "${source_directory}" "${build_directory}"
-            _configure_cmake_debug "${source_directory}" "${build_directory}"
+            _configure_cmake_debug "${macro_prefix}" "${source_directory}" "${build_directory}"
             ;;
         "debug:coverage")
             _install_conan_dependencies_debug "${source_directory}" "${build_directory}"
-            _configure_cmake_debug_coverage "${source_directory}" "${build_directory}"
+            _configure_cmake_debug_coverage "${macro_prefix}" "${source_directory}" "${build_directory}"
             ;;
         "debug:fuzz")
             _install_conan_dependencies_debug "${source_directory}" "${build_directory}"
-            _configure_cmake_debug_fuzz "${source_directory}" "${build_directory}"
+            _configure_cmake_debug_fuzz "${macro_prefix}" "${source_directory}" "${build_directory}"
             ;;
         "release")
             _install_conan_dependencies_release "${source_directory}" "${build_directory}"
-            _configure_cmake_release "${source_directory}" "${build_directory}"
+            _configure_cmake_release "${macro_prefix}" "${source_directory}" "${build_directory}"
             ;;
         *)
             log_error "Invalid build mode '${build_mode}'"
@@ -285,33 +290,34 @@ function build_cxx {
 }
 
 function test_cxx {
-    local source_directory="${1}"
-    local build_directory="${2}"
-    local test_binary="${3:-}"
-    local test_filter="${4:-}"
+    local macro_prefix="${1}"
+    local source_directory="${2}"
+    local build_directory="${3}"
+    local test_binary="${4:-}"
+    local test_filter="${5:-}"
 
     case "${1:-}" in
         "")
-            build_cxx "${source_directory}" "${build_directory}" debug
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}" debug
             _run_all_tests_with_prefix "${build_directory}" "test-external"
             _run_all_tests_with_prefix "${build_directory}" "test-unit-*"
             _run_all_tests_with_prefix "${build_directory}" "test-functional-*"
             ;;
         "coverage")
             rm -rf "${build_directory}" || true
-            build_cxx "${source_directory}" "${build_directory}" debug:coverage
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}" debug:coverage
             _run_all_tests_with_prefix "${build_directory}" "test-unit-*"
             _run_all_tests_with_prefix "${build_directory}" "test-functional-*"
             _generate_coverage_report "${build_directory}"
             ;;
         "coverage:unit")
             rm -rf "${build_directory}" || true
-            build_cxx "${source_directory}" "${build_directory}" debug:coverage
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}" debug:coverage
             _run_all_tests_with_prefix "${build_directory}" "test-unit-*"
             _generate_coverage_report "${build_directory}"
             ;;
         "fuzz")
-            build_cxx "${source_directory}" "${build_directory}" debug:fuzz
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}" debug:fuzz
 
             if [[ -z "${test_binary}" ]]; then
                 _run_all_tests_with_prefix "${build_directory}" "test-fuzz-*"
@@ -324,7 +330,7 @@ function test_cxx {
                     die "Fuzz test requires a filter to be specified"
                 fi
 
-                ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "--fuzz=${test_filter}" "${@:5}"
+                ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "--fuzz=${test_filter}" "${@:6}"
             fi
             ;;
         "bench")
@@ -332,22 +338,22 @@ function test_cxx {
                 die "Benchmark test requires binary to be specified"
             fi
 
-            build_cxx "${source_directory}" "${build_directory}"
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}"
 
             if [[ ! -f "${build_directory}/${test_binary}" ]]; then
                 die "Benchmark test binary '${test_binary}' not found in build directory '${build_directory}'"
             fi
 
-            ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "${@:4}"
+            ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "${@:5}"
             ;;
         *)
-            build_cxx "${source_directory}" "${build_directory}"
+            build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}"
 
             if [[ ! -f "${build_directory}/${test_binary}" ]]; then
                 die "Test binary '${test_binary}' not found in build directory '${build_directory}'"
             fi
 
-            ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "${@:4}"
+            ASAN_OPTIONS=detect_container_overflow=0 "${build_directory}/${test_binary}" "${@:5}"
             ;;
     esac
 }
