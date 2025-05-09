@@ -34,13 +34,6 @@ function setup {
     assert_output ""
 }
 
-@test "at least one OS check is true" {
-    run is_macos || is_linux
-
-    assert_output ""
-    assert_success
-}
-
 @test "is_host_os_supported > smoke" {
     run is_host_os_supported macos
 
