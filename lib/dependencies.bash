@@ -657,6 +657,8 @@ function dependency_mkdocs {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
