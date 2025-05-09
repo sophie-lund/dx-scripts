@@ -86,6 +86,7 @@ function ensure_dependencies_installed {
 
     # Create arrays to aggregate bulk operations
     brew_formulae=()
+    apt_packages=()
 
     # Install the dependencies
     for dependency in "${dependencies_filtered[@]}"; do
@@ -123,6 +124,13 @@ function ensure_dependencies_installed {
         else
             brew_formula=""
         fi
+
+        local apt_package
+        if is_linux; then
+            apt_package="$(${dependency} get-apt-package || true)"
+        else
+            apt_package=""
+        fi
         
         local fallback_instructions_url
         fallback_instructions_url="$(${dependency} get-fallback-instructions-url || true)"
@@ -148,6 +156,10 @@ function ensure_dependencies_installed {
         # If there is a Homebrew formula, add it to the list
         elif [[ -n "${brew_formula}" ]]; then
             brew_formulae+=("${brew_formula}")
+
+        # If there is an APT package, add it to the list
+        elif [[ -n "${apt_package}" ]]; then
+            apt_packages+=("${apt_package}")
         
         # If there is a fallback instructions URL, print it
         elif [[ -n "${fallback_instructions_url}" ]]; then
@@ -179,6 +191,18 @@ function ensure_dependencies_installed {
         
         if ! brew install "${brew_formulae[@]}"; then
             die "Error while installing Homebrew formulae"
+        fi
+    fi
+
+    # Install APT packages if any were found
+    if [[ ${#apt_packages[@]} -gt 0 ]]; then
+        log_info "Installing APT packages: ${apt_packages[*]}"
+
+        sudo apt update
+        sudo apt upgrade -y
+        
+        if ! sudo apt install -y "${apt_packages[@]}"; then
+            die "Error while installing APT packages"
         fi
     fi
 }

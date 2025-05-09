@@ -78,6 +78,13 @@ function dependency_<name> {
             # Do not print anything if such a formula does not exist.
             printf "some-formula"
             ;;
+        "get-apt-package")
+            # Print the name of the APT package that can be used to
+            # install the dependency on Debian-based systems.
+            #
+            # Do not print anything if such a package does not exist.
+            printf "some-package"
+            ;;
         "get-fallback-instructions-url")
             # Print the URL of instructions for how to install this dependency.
             #

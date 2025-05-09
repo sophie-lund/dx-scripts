@@ -71,6 +71,8 @@ function dependency_xcode_cli_tools {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -106,6 +108,8 @@ function dependency_xcode {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -138,6 +142,9 @@ function dependency_git {
         "get-install-command")
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
+            printf "git-all"
             ;;
         "get-fallback-instructions-url")
             printf "https://git-scm.com/book/en/v2/Getting-Started-Installing-Git"
@@ -177,6 +184,8 @@ function dependency_homebrew {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -209,6 +218,8 @@ function dependency_nvm {
             printf "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
             ;;
         "get-fallback-instructions-url")
             ;;
@@ -248,6 +259,8 @@ function dependency_node {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -279,6 +292,8 @@ function dependency_go {
         "get-install-command")
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
             ;;
         "get-fallback-instructions-url")
             printf "https://golang.org/doc/install"
@@ -312,6 +327,9 @@ function dependency_jq {
         "get-install-command")
             ;;
         "get-brew-formula")
+            printf "jq"
+            ;;
+        "get-apt-package")
             printf "jq"
             ;;
         "get-fallback-instructions-url")
@@ -386,6 +404,8 @@ function dependency_cocoapods {
         "get-brew-formula")
             printf "cocoapods"
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -416,6 +436,8 @@ function dependency_docker {
         "get-install-command")
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
             ;;
         "get-fallback-instructions-url")
             printf "https://docs.docker.com/desktop/"
@@ -449,6 +471,8 @@ function dependency_aws_cli {
         "get-install-command")
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
             ;;
         "get-fallback-instructions-url")
             printf "https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html"
@@ -484,6 +508,9 @@ function dependency_cmake {
         "get-brew-formula")
             printf "cmake"
             ;;
+        "get-apt-package")
+            printf "cmake"
+            ;;
         "get-fallback-instructions-url")
             printf "%s" "https://cmake.org/cmake/help/book/mastering-cmake/chapter/Getting%20Started.html"
             ;;
@@ -516,9 +543,13 @@ function dependency_pipx {
         "get-install-command")
             if is_macos; then
                 printf "brew install pipx && pipx ensurepath"
+            elif is_linux; then
+                printf "apt install pipx && pipx ensurepath"
             fi
             ;;
         "get-brew-formula")
+            ;;
+        "get-apt-package")
             ;;
         "get-fallback-instructions-url")
             printf "https://pipx.pypa.io/stable/installation/"
@@ -554,6 +585,8 @@ function dependency_conan {
             ;;
         "get-brew-formula")
             ;;
+        "get-apt-package")
+            ;;
         "get-fallback-instructions-url")
             ;;
         "get-fallback-instructions")
@@ -585,6 +618,9 @@ function dependency_doxygen {
         "get-install-command")
             ;;
         "get-brew-formula")
+            printf "doxygen"
+            ;;
+        "get-apt-package")
             printf "doxygen"
             ;;
         "get-fallback-instructions-url")
@@ -654,6 +690,9 @@ function dependency_lcov {
         "get-brew-formula")
             printf "lcov"
             ;;
+        "get-apt-package")
+            printf "lcov"
+            ;;
         "get-fallback-instructions-url")
             printf "https://lcov.readthedocs.io/en/latest/"
             ;;
@@ -688,6 +727,9 @@ function dependency_just {
         "get-brew-formula")
             printf "just"
             ;;
+        "get-apt-package")
+            printf "just"
+            ;;
         "get-fallback-instructions-url")
             printf "https://github.com/casey/just?tab=readme-ov-file#packages"
             ;;
@@ -720,6 +762,9 @@ function dependency_shellcheck {
         "get-install-command")
             ;;
         "get-brew-formula")
+            printf "shellcheck"
+            ;;
+        "get-apt-package")
             printf "shellcheck"
             ;;
         "get-fallback-instructions-url")
