@@ -45,12 +45,6 @@ fi
 
 # These should all be prefixed with '_'
 
-# Helper method to print a confirmation prompt to the user.
-#
-# Arguments
-#   default       -- The default response to use or an empty string if there is none
-#   message_color -- The color escape code to use for the message
-#   message       -- The message to print
 function _confirm_user_consent_helper {
     local default="${1}"
     local message_color="${2}"
@@ -102,32 +96,18 @@ function _confirm_user_consent_helper {
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Ask the user to consent to an action with no default response.
-#
-# Arguments:
-#   message -- The message to print
 function confirm_user_consent_neutral {
     local message="$1"
 
     _confirm_user_consent_helper "" "\033[1;37m" "${message}"
 }
 
-# Ask the user to consent to an action that defaults to yes. Safe actions can use this to confirm
-# consent.
-#
-# Arguments:
-#   message -- The message to print
 function confirm_user_consent_safe {
     local message="$1"
 
     _confirm_user_consent_helper "y" "\033[1;37m" "${message}"
 }
 
-# Ask the user to consent to an action that defaults to no. Dangerous actions can use this to
-# confirm consent.
-#
-# Arguments:
-#   message -- The message to print
 function confirm_user_consent_dangerous {
     local message="$1"
 

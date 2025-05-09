@@ -52,8 +52,22 @@ markdown_extensions:
     - toc:
           permalink: true
     - admonition
+    - pymdownx.tabbed:
+          alternate_style: true
+    - footnotes
 
 nav:
     - Intro: index.md
     - Reference:
+        - Recommended script structure: reference/recommended-script-structure.md
         - Logging: reference/logging.md
+        - Prompts: reference/prompts.md
+        - Utilities: reference/utilities.md
+        - Config: reference/config.md
+        - DNS: reference/dns.md
+        - Docker: reference/docker.md
+        - AWS: reference/aws.md
+        - Dependency predicates: reference/dependency-predicates.md
+        - Dependencies: reference/dependencies.md
+        - Bootstrap: reference/bootstrap.md
+        - C++: reference/cxx.md

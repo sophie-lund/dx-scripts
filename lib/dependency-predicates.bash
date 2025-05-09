@@ -43,11 +43,6 @@ fi
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Checks if the current OS is Linux
-#
-# Return codes:
-#   0 -- The current OS is Linux
-#   1 -- The current OS is not Linux
 function is_linux {
     if [[ "$(uname -s || true)" == "Linux" ]]; then
         return 0
@@ -56,11 +51,6 @@ function is_linux {
     return 1
 }
 
-# Checks if the current OS is macOS
-#
-# Return codes:
-#   0 -- The current OS is macOS
-#   1 -- The current OS is not macOS
 function is_macos {
     if [[ "$(uname -s || true)" == "Darwin" ]]; then
         return 0
@@ -69,15 +59,6 @@ function is_macos {
     return 1
 }
 
-# Checks if the current OS is supported
-#
-# Arguments:
-#  os... -- The supported OSes to check against. At least one must be provided, but multiple can be
-#           provided to allow multiple OSes.
-#
-# Return codes:
-#   0 -- The current OS is supported
-#   1 -- The current OS is not supported
 function is_host_os_supported {
     if [[ -z "${1:-}" ]]; then
         die "No OS specified as argument - allowed are: linux, macos"
@@ -104,14 +85,6 @@ function is_host_os_supported {
     return 1
 }
 
-# Checks if the specified command can be called
-#
-# Arguments:
-#   command -- The command to check
-#
-# Return codes:
-#   0 -- It exists
-#   1 -- It does not exist
 function does_command_exist {
     local command="${1}"
 
@@ -122,14 +95,6 @@ function does_command_exist {
     fi
 }
 
-# Checks if the Xcode CLI tools are installed
-#
-# Return codes:
-#   0 -- They are installed
-#   1 -- They are not installed
-#
-# Errors:
-#   It will die if the OS is not macOS.
 function are_xcode_cli_tools_installed {
     if ! is_macos; then
         die "This function is only supported on macOS"
@@ -142,14 +107,6 @@ function are_xcode_cli_tools_installed {
     fi
 }
 
-# Checks if Xcode is installed
-#
-# Return codes:
-#   0 -- It is installed
-#   1 -- It is not installed
-#
-# Errors:
-#   It will die if the OS is not macOS.
 function is_xcode_installed {
     if ! is_macos; then
         die "This function is only supported on macOS"
@@ -178,11 +135,6 @@ function is_nvm_installed {
     fi
 }
 
-# Checks if Docker Compose >=2.x is installed
-#
-# Return codes:
-#   0 -- It is installed
-#   1 -- It is not installed
 function is_docker_compose_2x_installed {
     if ! does_command_exist docker; then
         return 1
@@ -195,11 +147,6 @@ function is_docker_compose_2x_installed {
     return 0
 }
 
-# Checks if Docker's engine metrics are enabled
-#
-# Return codes:
-#   0 -- It is installed
-#   1 -- It is not installed
 function are_docker_engine_metrics_enabled {
     if [[ -n "$(curl --max-time 2 --silent "http://localhost:9323/metrics" | grep --ignore-case engine_daemon_engine_info 2>/dev/null || true)" ]]; then
         return 0

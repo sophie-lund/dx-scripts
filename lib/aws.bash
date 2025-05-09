@@ -45,17 +45,6 @@ fi
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Lists all AWS profiles in ~/.aws/config that start with the given prefix.
-#
-# Case insensitive, but it will convert the results to lowercase.
-#
-# Arguments:
-#   prefix -- The prefix to match against the profile names.
-#
-# Return codes:
-#   0 -- The environment names were printed to stdout on separate lines.
-#   1 -- There is no AWS config file
-#   2 -- No AWS profiles found with the given prefix
 function list_aws_environment_names {
     local prefix="${1}"
 
@@ -79,21 +68,6 @@ function list_aws_environment_names {
     printf "%s\n" "${results}"
 }
 
-# Logs in to AWS using the given environment.
-#
-# It expects there to be profiles in ~/.aws/config that start with the given prefix, one for each
-# possible environment. Case insensitive.
-#
-# Arguments:
-#   prefix      -- The prefix to match against the profile names.
-#   environment -- The environment to log in to.
-#
-# Return codes:
-#   0 -- We are not logged in to the environment's AWS profile.
-#   1 -- There is no AWS config file (from list_aws_environment_names)
-#   2 -- No AWS profiles found with the given prefix (from list_aws_environment_names)
-#   3 -- No AWS profile found for the given environment
-#   4 -- SSO login failed
 function login_to_aws_sso {
     local prefix="${1}"
     local environment="${2}"
@@ -131,11 +105,6 @@ function login_to_aws_sso {
     export AWS_PROFILE="${prefix}${environment}"
 }
 
-# Configures AWS to point to a specific endpoint URL.
-#
-# Arguments:
-#   endpoint_url -- The URL of the endpoint to log in to.
-#   region       -- The AWS region to use - 'us-east-1' is a sensible default.
 function login_to_aws_endpoint {
     local endpoint_url="${1}"
     local region="${2}"

@@ -86,9 +86,9 @@ function _configure_cmake_debug {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        "-D${macro_prefix}_BUILD_TESTS=on" \
-        "-D${macro_prefix}_BUILD_DEMOS=on" \
-        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
+        "-D${macro_prefix}_BUILD_TESTS=1" \
+        "-D${macro_prefix}_BUILD_DEMOS=1" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=0" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1
@@ -107,9 +107,9 @@ function _configure_cmake_debug_coverage {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        "-D${macro_prefix}_BUILD_TESTS=on" \
-        "-D${macro_prefix}_BUILD_DEMOS=on" \
-        "-D${macro_prefix}_ENABLE_COVERAGE=on" \
+        "-D${macro_prefix}_BUILD_TESTS=1" \
+        "-D${macro_prefix}_BUILD_DEMOS=1" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=0" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1
@@ -128,9 +128,9 @@ function _configure_cmake_debug_fuzz {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Debug \
-        "-D${macro_prefix}_BUILD_TESTS=on" \
-        "-D${macro_prefix}_BUILD_DEMOS=on" \
-        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
+        "-D${macro_prefix}_BUILD_TESTS=1" \
+        "-D${macro_prefix}_BUILD_DEMOS=1" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=0" \
         -DFUZZTEST_FUZZING_MODE=on \
         -G Ninja; then
         return 1
@@ -149,9 +149,9 @@ function _configure_cmake_release {
         -S "${source_directory}" \
         -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Release \
-        "-D${macro_prefix}_BUILD_TESTS=off" \
-        "-D${macro_prefix}_BUILD_DEMOS=off" \
-        "-D${macro_prefix}_ENABLE_COVERAGE=off" \
+        "-D${macro_prefix}_BUILD_TESTS=0" \
+        "-D${macro_prefix}_BUILD_DEMOS=0" \
+        "-D${macro_prefix}_ENABLE_COVERAGE=0" \
         -DFUZZTEST_FUZZING_MODE=off \
         -G Ninja; then
         return 1

@@ -41,16 +41,22 @@ fi
 
 # These should all be prefixed with '_'
 
-# Print a log message with a configurable severity to stderr.
-#
-# Arguments:
-#   severity -- The string to represent the severity level
-#   color    -- The color escape code to use for the severity level
-#   message  -- The message to print
 function _log_with_severity {
     local severity="${1}"
     local color="${2}"
     local message="${3}"
+
+    if [[ -z "${severity}" ]]; then
+        die "Severity must not be empty"
+    fi
+
+    if [[ -z "${color}" ]]; then
+        die "Color must not be empty"
+    fi
+
+    if [[ -z "${message}" ]]; then
+        die "Message must not be empty"
+    fi
 
     if printf "%s" "${message}" | grep -qE "^[a-z].+"; then
         die "Log messages must start with a capital letter: '${message}'"
@@ -69,40 +75,24 @@ function _log_with_severity {
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Logs information.
-#
-# Arguments:
-#   message -- The message to log
 function log_info {
     local message="${1}"
 
     _log_with_severity "info" "\033[1;32m" "${message}"
 }
 
-# Logs a warning.
-#
-# Arguments:
-#   message -- The message to log
 function log_warning {
     local message="${1}"
 
     _log_with_severity "warning" "\033[1;33m" "${message}"
 }
 
-# Logs an error.
-#
-# Arguments:
-#   message -- The message to log
 function log_error {
     local message="${1}"
 
     _log_with_severity "error" "\033[1;31m" "${message}"
 }
 
-# Logs an error and exits the script with exit status 1.
-#
-# Arguments:
-#   message -- The message to log
 function die {
     local message="${1}"
 
@@ -110,26 +100,6 @@ function die {
     exit 1
 }
 
-# Runs a series of steps in order, logging the results.
-#
-# Arguments:
-#   steps... -- The steps to run.
-#
-# Each step is a function that is called. It must be of this form:
-#
-# function step_<name> {
-#     case "$1" in
-#         "title")
-#             printf "<title>"
-#             ;;
-#         "enabled")
-#             printf "true"
-#             ;;
-#         "run")
-#             # ...
-#             ;;
-#     esac
-# }
 function run_steps {
     # Filter steps to only those that are enabled
     local steps_filtered=()

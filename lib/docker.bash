@@ -47,11 +47,6 @@ fi
 
 # These should all be prefixed with '_'
 
-# Formats the status of the Docker Compose project as a table to stdout.
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
 function _format_docker_compose_status {
     local docker_compose_relative_path="${1}"
 
@@ -139,13 +134,6 @@ function _format_docker_compose_status {
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Runs Docker Compose but with some flags set to ensure safe behavior and that the correct project
-# is selected.
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   *                            -- The arguments to pass to Docker Compose
 function run_docker_compose {
     local current_project_directory
     current_project_directory="$(get_current_project_directory)"
@@ -154,6 +142,10 @@ function run_docker_compose {
 
     local env_path
     env_path="${current_project_directory}/${DX_SCRIPTS_ENV_FILENAME:-".env"}"
+
+    if [[ ! -f "${docker_compose_path}" ]]; then
+        die "Docker Compose file '${docker_compose_path}' does not exist"
+    fi
 
     if ! grep -qiE '^COMPOSE_PROJECT_NAME=' "${env_path}"; then
         die "COMPOSE_PROJECT_NAME is not set in '${env_path}' - please add it to prevent conflicts with other Docker compose projects"
@@ -168,15 +160,6 @@ function run_docker_compose {
     )
 }
 
-# Checks if the Docker Compose project is running.
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#
-# Return codes:
-#   0 -- The Docker Compose project is running
-#   1 -- The Docker Compose project is not running
 function is_docker_compose_project_running {
     local docker_compose_relative_path="${1}"
 
@@ -188,15 +171,6 @@ function is_docker_compose_project_running {
     fi
 }
 
-# Cleans up Docker volumes that match the given prefix
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   prefix                       -- The prefix to match against the volume names
-#
-# Return codes:
-#   1 -- The Docker Compose project is still running and needs to be stopped first
 function docker_clean_volumes {
     local docker_compose_relative_path="${1}"
     local prefix="${2}"
@@ -235,13 +209,6 @@ function docker_clean_volumes {
     done
 }
 
-# Runs Docker Compose to bring down containers with an optional name
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   container name (optional)    -- The name of the container to bring down, or all containers if
-#                                   not specified
 function docker_compose_down {
     local docker_compose_relative_path="${1}"
     local container_name="${2:-}"
@@ -255,13 +222,6 @@ function docker_compose_down {
     fi
 }
 
-# Runs Docker Compose to bring up containers with an optional name
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   container name (optional)    -- The name of the container to bring up, or all containers if not
-#                                   specified
 function docker_compose_up {
     local docker_compose_relative_path="${1}"
     local container_name="${2:-}"
@@ -283,13 +243,6 @@ function docker_compose_up {
     fi
 }
 
-# Restarts the Docker Compose project by bringing it down and then back up
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   container name (optional)    -- The name of the container to restart, or all containers if not
-#                                   specified
 function docker_compose_restart {
     local docker_compose_relative_path="${1}"
     local container_name="${2:-}"
@@ -298,13 +251,6 @@ function docker_compose_restart {
     docker_compose_up "${docker_compose_relative_path}" "${container_name}"
 }
 
-# Tails the logs of a Docker Compose project
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   container name (optional)    -- The name of the container to tail logs for, or all containers if
-#                                   not specified
 function tail_docker_compose_logs {
     local docker_compose_relative_path="${1}"
     local container_name="${2:-}"
@@ -318,13 +264,6 @@ function tail_docker_compose_logs {
     fi
 }
 
-# Executes an interactive shell in a Docker Compose container
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
-#   container name               -- The name of the container to execute in
-#   command (optional)           -- An optional command to run in the shell via '-c'
 function exec_docker_compose_shell {
     local docker_compose_relative_path="${1}"
     local container_name="${2}"
@@ -347,11 +286,6 @@ function exec_docker_compose_shell {
     fi
 }
 
-# Prints the status of the Docker Compose project as a table to stdout.
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
 function print_docker_compose_status {
     local docker_compose_relative_path="${1}"
 
@@ -366,11 +300,6 @@ function print_docker_compose_status {
     printf "%b" "${output}"
 }
 
-# Watches the status of the Docker Compose project as a table to stdout by refreshing it regularly.
-#
-# Arguments:
-#   relative Docker Compose path -- The path to the Docker Compose file relative to the current
-#                                   project directory
 function watch_docker_compose_status {
     local docker_compose_relative_path="${1}"
 

@@ -14,6 +14,7 @@
         "ensurepath",
         "esac",
         "genhtml",
+        "Justfiles",
         "mkdocs",
         "nvmrc",
         "pipx",

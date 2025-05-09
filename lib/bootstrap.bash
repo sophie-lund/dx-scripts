@@ -47,41 +47,6 @@ fi
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Installs a series of dependencies in order.
-#
-# Arguments:
-#   dependencies... -- The dependencies to install.
-#
-# Each dependency is a function that is called. It must be of this form:
-#
-# function dependency_<name> {
-#     case "$1" in
-#         "get-name")
-#             printf "<name>"
-#             ;;
-#         "dependencies")
-#             printf "<dependency1> <dependency2>"
-#             ;;
-#         "check-enabled")
-#             printf "true"
-#             ;;
-#         "check-installed")
-#             printf "true"
-#             ;;
-#         "get-install-command")
-#             printf "<command>"
-#             ;;
-#         "get-brew-formula")
-#             printf "<formula>"
-#             ;;
-#         "get-fallback-instructions-url")
-#             printf "<url>"
-#             ;;
-#         "get-fallback-instructions")
-#             printf "<instructions>"
-#             ;;
-#     esac
-# }
 function ensure_dependencies_installed {
     # Check for dependency order
     local dependencies_so_far=()

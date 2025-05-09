@@ -67,14 +67,6 @@ function _load_config_into_env {
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Gets a configuration value from the environment.
-#
-# It will load the .env file from the project directory if it hasn't been loaded yet. It will print
-# nothing to stdout if the key is not set in the environment.
-#
-# Arguments:
-#   key -- The key to look up in the configuration - this is the same as the name of the environment
-#          variable.
 function get_config_value {
     local key="${1}"
 
@@ -87,12 +79,6 @@ function get_config_value {
     printf "%s" "${variable_value}"
 }
 
-# Gets a configuration value from the environment and dies if it is not set.
-#
-# See 'get_config_value' for more information.
-#
-# Errors:
-#   It will die if the key is not set in the environment.
 function require_config_value {
     local key="${1}"
 

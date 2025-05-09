@@ -44,10 +44,6 @@ fi
 # Public functions
 # --------------------------------------------------------------------------------------------------
 
-# Runs a command and prints the output only if the command fails.
-#
-# Arguments:
-#   command -- The command and its arguments to run
 function print_output_on_error {
     local tempfile
     tempfile="$(mktemp)" || return
@@ -61,14 +57,6 @@ function print_output_on_error {
     rm -f "${tempfile}"
 }
 
-# Captures stdout and exit status of a command.
-#
-# Arguments:
-#   command... -- The command to run and its arguments
-#
-# Global variables set:
-#   CAPTURE_STDOUT -- The standard output of the command
-#   CAPTURE_EXIT_STATUS -- The exit status of the command
 function capture_command_output {
     local tempfile
     tempfile="$(mktemp)" || return
@@ -89,10 +77,6 @@ function capture_command_output {
     fi
 }
 
-# Gets the current project directory.
-#
-# It searches each parent directory relative to the script's directory for a '.git' directory that
-# is not a submodule.
 function get_current_project_directory {
     if [[ -n "${DX_SCRIPTS_PROJECT_DIRECTORY:-}" ]]; then
         printf "%s" "${DX_SCRIPTS_PROJECT_DIRECTORY}"
