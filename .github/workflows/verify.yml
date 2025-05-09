@@ -18,7 +18,7 @@ jobs:
 
       - name: Bootstrap
         run: |
-          DX_SCRIPTS_ALWAYS_CONSENT=true bash ./bootstrap.bash
+          DX_SCRIPTS_ALWAYS_CONSENT=true DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE=true bash ./bootstrap.bash
 
       - name: Lint
         run: |

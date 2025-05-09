@@ -199,7 +199,10 @@ function ensure_dependencies_installed {
         log_info "Installing APT packages: ${apt_packages[*]}"
 
         sudo apt-get update
-        sudo apt-get upgrade -y
+
+        if [[ "${DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE:-}" != "true" ]]; then
+            sudo apt-get upgrade -y
+        fi
         
         if ! sudo apt-get install -y "${apt_packages[@]}"; then
             die "Error while installing APT packages"
