@@ -198,10 +198,10 @@ function ensure_dependencies_installed {
     if [[ ${#apt_packages[@]} -gt 0 ]]; then
         log_info "Installing APT packages: ${apt_packages[*]}"
 
-        sudo apt update
-        sudo apt upgrade -y
+        sudo apt-get update
+        sudo apt-get upgrade -y
         
-        if ! sudo apt install -y "${apt_packages[@]}"; then
+        if ! sudo apt-get install -y "${apt_packages[@]}"; then
             die "Error while installing APT packages"
         fi
     fi
