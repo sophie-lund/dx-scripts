@@ -63,6 +63,8 @@ function setup {
             "check-enabled")
                 printf "false"
                 ;;
+            "list-dependencies")
+                ;;
             "check-installed")
                 printf "true"
                 ;;

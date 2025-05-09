@@ -2,6 +2,7 @@ name: Publish book
 
 on:
   workflow_dispatch:
+
   push:
     branches:
       - main
@@ -10,7 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  build-deploy:
+  build-and-push:
+    name: Build and push
     runs-on: ubuntu-latest
 
     steps:

@@ -58,6 +58,11 @@ function _confirm_user_consent_helper {
         die "Message must be provided"
     fi
 
+    if [[ "${DX_SCRIPTS_ALWAYS_CONSENT:-}" == "true" ]]; then
+        log_warning "DX_SCRIPTS_ALWAYS_CONSENT is set to true - skipping user consent"
+        return 0
+    fi
+
     while true; do
         printf "%b%s\033[0;0m " "${message_color}" "${message}"
 
