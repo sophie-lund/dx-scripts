@@ -23,7 +23,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    depends-on: bootstrap
+    needs: bootstrap
 
     steps:
       - name: Lint
@@ -33,7 +33,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    depends-on: bootstrap
+    needs: bootstrap
 
     steps:
       - name: Test
