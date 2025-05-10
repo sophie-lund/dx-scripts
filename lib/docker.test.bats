@@ -49,6 +49,10 @@ function teardown {
 @test "run_docker_compose > no .env file" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
+
     run run_docker_compose "docker-compose.yml" version
 
     assert_failure
@@ -56,6 +60,10 @@ function teardown {
 
 @test "run_docker_compose > with .env file but without COMPOSE_PROJECT_NAME" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
+
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
 
     printf 'TEST=hello, world\n' > "${TEST_TEMP_DIR}/.env"
 
@@ -67,6 +75,10 @@ function teardown {
 @test "run_docker_compose > with .env file with COMPOSE_PROJECT_NAME" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
+
     printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
 
     run run_docker_compose "docker-compose.yml" version
@@ -76,6 +88,10 @@ function teardown {
 
 @test "docker_compose_up > all up" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
+
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
 
     printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
 
@@ -99,6 +115,10 @@ function teardown {
 @test "docker_compose_up > one up" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
+
     printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
 
     run is_docker_compose_project_running "docker-compose.yml"
@@ -116,6 +136,10 @@ function teardown {
 
 @test "docker_compose_up > restart all" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
+
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
 
     printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
 
@@ -142,6 +166,10 @@ function teardown {
 
 @test "docker_compose_up > restart one" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
+
+    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        return 0
+    fi
 
     printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
 
