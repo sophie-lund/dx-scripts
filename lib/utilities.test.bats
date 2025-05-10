@@ -125,6 +125,9 @@ function teardown {
     (
         cd "${TEST_TEMP_DIR}"
         git init
+        git config user.email "example@example.com"
+        git config user.name "Example"
+        git branch -m main
         touch not-ignored
         git add not-ignored
         git commit -m "initial commit"
@@ -144,6 +147,9 @@ function teardown {
     (
         cd "${TEST_TEMP_DIR}"
         git init
+        git config user.email "example@example.com"
+        git config user.name "Example"
+        git branch -m main
         touch not-ignored
         echo 'ignored' > .gitignore
         git add not-ignored
