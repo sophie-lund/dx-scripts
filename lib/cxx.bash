@@ -175,7 +175,15 @@ function _require_previous_build_mode {
     local build_directory="${1}"
 
     if [[ ! -d "${build_directory}" ]]; then
-        die "Build directory '${build_directory}' does not exist"
+        log_error "When the project has not been built before, you need to specify the build mode"
+        printf "\n"
+        printf "Build mode can be any of:\n"
+        printf "  debug\n"
+        printf "  debug:coverage\n"
+        printf "  debug:fuzz\n"
+        printf "  release\n"
+        printf "\n"
+        exit 1
     fi
 
     if [[ ! -f "${build_directory}/.dx-scripts-build-mode" ]]; then
@@ -194,10 +202,13 @@ function _require_previous_build_mode {
 
 function _run_all_tests_with_prefix {
     local build_directory="${1}"
+    local prefix="${2}"
 
     local file_basename
 
-    for file in $(find "${build_directory}" -iname "$1" -type f -perm +111 || true); do
+    log_info "ASDF '${build_directory}'"
+
+    for file in $(find "${build_directory}" -iname "${prefix}" -type f -perm +111 || true); do
         file_basename="$(basename "${file}" || true)"
         
         log_info "Running test: ${file_basename}"
@@ -252,12 +263,18 @@ function build_cxx {
     local macro_prefix="${1}"
     local source_directory="${2}"
     local build_directory="${3}"
-    local build_mode="${4:-}"
+    local default_build_mode="${4}"
+    local build_mode="${5:-}"
+
+    if [[ -n "${default_build_mode}" ]] && [[ -z "${build_mode}" ]]; then
+        build_mode="${default_build_mode}"
+    fi
 
     if [[ -z "${build_mode}" ]]; then
         build_mode="$(_require_previous_build_mode "${build_directory}")"
     fi
 
+    mkdir -p "${build_directory}"
     printf "%s" "${build_mode}" > "${build_directory}/.dx-scripts-build-mode"
 
     case "${build_mode}" in
@@ -296,11 +313,10 @@ function test_cxx {
     local macro_prefix="${1}"
     local source_directory="${2}"
     local build_directory="${3}"
-    local test_binary="${4:-}"
-    local test_filter="${5:-}"
+    local test_mode="${4}"
 
-    case "${1:-}" in
-        "")
+    case "${test_mode}" in
+        "all")
             build_cxx "${macro_prefix}" "${source_directory}" "${build_directory}" debug
             _run_all_tests_with_prefix "${build_directory}" "test-external"
             _run_all_tests_with_prefix "${build_directory}" "test-unit-*"
