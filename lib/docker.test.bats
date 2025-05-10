@@ -49,147 +49,133 @@ function teardown {
 @test "run_docker_compose > no .env file" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        run run_docker_compose "docker-compose.yml" version
+
+        assert_failure
     fi
-
-    run run_docker_compose "docker-compose.yml" version
-
-    assert_failure
 }
 
 @test "run_docker_compose > with .env file but without COMPOSE_PROJECT_NAME" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf 'TEST=hello, world\n' > "${TEST_TEMP_DIR}/.env"
+
+        run run_docker_compose "docker-compose.yml" version
+
+        assert_failure
     fi
-
-    printf 'TEST=hello, world\n' > "${TEST_TEMP_DIR}/.env"
-
-    run run_docker_compose "docker-compose.yml" version
-
-    assert_failure
 }
 
 @test "run_docker_compose > with .env file with COMPOSE_PROJECT_NAME" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
+
+        run run_docker_compose "docker-compose.yml" version
+
+        assert_success
     fi
-
-    printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
-
-    run run_docker_compose "docker-compose.yml" version
-
-    assert_success
 }
 
 @test "docker_compose_up > all up" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_failure
+
+        run docker_compose_up "docker-compose.yml"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
+
+        run exec_docker_compose_shell "docker-compose.yml" "test-service" "exit 0"
+
+        assert_success
     fi
-
-    printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_failure
-
-    run docker_compose_up "docker-compose.yml"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
-
-    run exec_docker_compose_shell "docker-compose.yml" "test-service" "exit 0"
-
-    assert_success
 }
 
 @test "docker_compose_up > one up" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_failure
+
+        run docker_compose_up "docker-compose.yml" "test-service"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
     fi
-
-    printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_failure
-
-    run docker_compose_up "docker-compose.yml" "test-service"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
 }
 
 @test "docker_compose_up > restart all" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_failure
+
+        run docker_compose_up "docker-compose.yml"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
+
+        run docker_compose_restart "docker-compose.yml"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
     fi
-
-    printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_failure
-
-    run docker_compose_up "docker-compose.yml"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
-
-    run docker_compose_restart "docker-compose.yml"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
 }
 
 @test "docker_compose_up > restart one" {
     export DX_SCRIPTS_PROJECT_DIRECTORY="${TEST_TEMP_DIR}"
 
-    if is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-        return 0
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_failure
+
+        run docker_compose_up "docker-compose.yml"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
+
+        run docker_compose_restart "docker-compose.yml" "test-service"
+
+        assert_success
+
+        run is_docker_compose_project_running "docker-compose.yml"
+
+        assert_success
     fi
-
-    printf "COMPOSE_PROJECT_NAME=\"${PROJECT_NAME}\"\n" > "${TEST_TEMP_DIR}/.env"
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_failure
-
-    run docker_compose_up "docker-compose.yml"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
-
-    run docker_compose_restart "docker-compose.yml" "test-service"
-
-    assert_success
-
-    run is_docker_compose_project_running "docker-compose.yml"
-
-    assert_success
 }
