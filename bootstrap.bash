@@ -45,16 +45,26 @@ fi
 # --------------------------------------------------------------------------------------------------
 
 function main {
-    ensure_dependencies_installed \
-        dependency_xcode_cli_tools \
-        dependency_git \
-        dependency_homebrew \
-        dependency_docker \
-        dependency_pipx \
-        dependency_mkdocs \
-        dependency_just \
-        dependency_shellcheck \
-    ;
+    dependencies=(
+        dependency_xcode_cli_tools
+        dependency_git
+        dependency_homebrew
+    )
+
+    if ! (is_macos && [[ -n "${GITHUB_ACTIONS:-}" ]]); then
+        dependencies+=(
+            dependency_docker
+        )
+    fi
+
+    dependencies+=(
+        dependency_pipx
+        dependency_mkdocs
+        dependency_just
+        dependency_shellcheck
+    )
+
+    ensure_dependencies_installed "${dependencies[@]}"
 
     log_info "Pulling submodules..."
 
