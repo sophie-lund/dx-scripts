@@ -1,18 +1,10 @@
 # DX Scripts
 
-Scripts to help automate the developer experience for different kinds of projects.
+[![CI](https://github.com/sophie-lund/dx-scripts/actions/workflows/ci.yml/badge.svg)](https://github.com/sophie-lund/dx-scripts/actions/workflows/ci.yml)
 
-## Usage
+DX Scripts is a set of BASH scripts that automate common developer tasks. It's intended to be included as a submodule in your project and then used as a BASH "library".
 
-### Environment variables
-
-You can use these environment variables to configure the scripts' behavior:
-
-| Variable                       | Description                                                | Default                                        |
-| ------------------------------ | ---------------------------------------------------------- | ---------------------------------------------- |
-| `DX_SCRIPTS_PROJECT_DIRECTORY` | The root directory of the project.                         | Detected using parent top-level Git repository |
-| `DX_SCRIPTS_ENV_FILENAME`      | The filename of the `.env` file to load for configuration. | `.env`                                         |
-| `DX_SCRIPTS_AWS_CONFIG_PATH`   | The path to the AWS config file.                           | `~/.aws/config`                                |
+See the [documentation](https://sophie-lund.github.io/dx-scripts/) for more information.
 
 ## Setup
 
