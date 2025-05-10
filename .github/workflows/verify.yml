@@ -10,7 +10,7 @@ on:
 jobs:
   lint:
     strategy:
-      matrix: &matrix
+      matrix:
         runner:
           - ubuntu-latest
           - ubuntu-24.04-arm
@@ -33,7 +33,11 @@ jobs:
 
   test:
     strategy:
-      matrix: *matrix
+      matrix:
+        runner:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
 
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.runner }}
