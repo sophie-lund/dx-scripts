@@ -8,8 +8,8 @@ on:
       - main
 
 jobs:
-  bootstrap:
-    name: Bootstrap
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -20,12 +20,6 @@ jobs:
         run: |
           DX_SCRIPTS_ALWAYS_CONSENT=true DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE=true bash ./bootstrap.bash
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    needs: bootstrap
-
-    steps:
       - name: Lint
         run: |
           just lint
@@ -33,9 +27,15 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: bootstrap
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap
+        run: |
+          DX_SCRIPTS_ALWAYS_CONSENT=true DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE=true bash ./bootstrap.bash
+
       - name: Test
         run: |
           just test-all
