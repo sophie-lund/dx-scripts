@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 . "./lib/docker.bash"
+. "./lib/dependency-predicates.bash"
 
 # bats file_tags=slow
 
