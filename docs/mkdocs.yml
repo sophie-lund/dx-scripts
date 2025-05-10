@@ -71,3 +71,4 @@ nav:
         - Dependencies: reference/dependencies.md
         - Bootstrap: reference/bootstrap.md
         - C++: reference/cxx.md
+        - Environment variables: reference/environment-variables.md

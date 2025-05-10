@@ -128,39 +128,41 @@ function setup {
 }
 
 @test "ensure_dependencies_installed > brew formula" {
-    if is_macos; then
-        function dependency_test {
-            case "${1}" in
-                "get-name")
-                    printf "Test"
-                    ;;
-                "check-enabled")
-                    printf "true"
-                    ;;
-                "check-installed")
-                    printf "false"
-                    ;;
-                "get-install-command")
-                    ;;
-                "get-brew-formula")
-                    # This is a quick to install formula that is suitable for testing
-                    printf "ncurses"
-                    ;;
-                "get-fallback-instructions-url")
-                    ;;
-                "get-fallback-instructions")
-                    ;;
-                *)
-                    die "Unknown command for dependency: '${1}'"
-                    ;;
-            esac
-        }
-
-        run ensure_dependencies_installed dependency_test
-
-        assert_output --partial "Installing Homebrew formulae: ncurses"
-        assert_success
+    if ! is_macos; then
+        skip
     fi
+
+    function dependency_test {
+        case "${1}" in
+            "get-name")
+                printf "Test"
+                ;;
+            "check-enabled")
+                printf "true"
+                ;;
+            "check-installed")
+                printf "false"
+                ;;
+            "get-install-command")
+                ;;
+            "get-brew-formula")
+                # This is a quick to install formula that is suitable for testing
+                printf "ncurses"
+                ;;
+            "get-fallback-instructions-url")
+                ;;
+            "get-fallback-instructions")
+                ;;
+            *)
+                die "Unknown command for dependency: '${1}'"
+                ;;
+        esac
+    }
+
+    run ensure_dependencies_installed dependency_test
+
+    assert_output --partial "Installing Homebrew formulae: ncurses"
+    assert_success
 }
 
 @test "ensure_dependencies_installed > fallback instructions url" {

@@ -165,7 +165,7 @@ function teardown {
     assert_output --partial "The following files are ignored by Git and will be removed:"
     assert_output --partial "  ignored"
     assert_output --partial "Are you sure you want to remove these files?"
-    assert_output --partial "y/N"
+    assert_output --partial "Y/n"
     assert_output --partial "Clean successful"
     assert_success
 

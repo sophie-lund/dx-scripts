@@ -18,6 +18,11 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_AWS:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
 SCRIPT_DIRECTORY_AWS="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 readonly SCRIPT_DIRECTORY_AWS
@@ -36,11 +41,9 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_UTILITIES:-}" ]] && . "${SCRIPT_DIRECTORY_AWS}/utilities.bash"
-[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_AWS}/logging.bash"
-[[ -z "${SCRIPT_DIRECTORY_CONFIG:-}" ]] && . "${SCRIPT_DIRECTORY_AWS}/config.bash"
+. "${SCRIPT_DIRECTORY_AWS}/utilities.bash"
+. "${SCRIPT_DIRECTORY_AWS}/logging.bash"
+. "${SCRIPT_DIRECTORY_AWS}/config.bash"
 
 # Public functions
 # --------------------------------------------------------------------------------------------------

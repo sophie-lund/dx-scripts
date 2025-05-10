@@ -6,5 +6,6 @@ Scripts:
   ✔ Add Just @done(25-05-04 11:33)
   ✔ Add GHA workflows @done(25-05-10 09:55)
   ✘ Add instructions to test locally with a Docker container @cancelled(25-05-10 09:55)
-  ☐ Improve the boilerplates
-  ☐ 
+  ✔ Improve the boilerplates @done(25-05-10 10:13)
+  ✔ Make the logging for bootstrapping less error-y @done(25-05-10 10:09)
+  ✔ Document and improve environment variables @done(25-05-10 10:22)

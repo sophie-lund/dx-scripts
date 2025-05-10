@@ -18,9 +18,14 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_DNS:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
-SCRIPT_DIRECTORY_BOOTSTRAP="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-readonly SCRIPT_DIRECTORY_BOOTSTRAP
+SCRIPT_DIRECTORY_DNS="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+readonly SCRIPT_DIRECTORY_DNS
 
 # Set flags
 set -o errexit # abort on nonzero exit status
@@ -36,11 +41,9 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_UTILITIES:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/utilities.bash"
-[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/logging.bash"
-[[ -z "${SCRIPT_DIRECTORY_DEPENDENCY_PREDICATES:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/dependency-predicates.bash"
+. "${SCRIPT_DIRECTORY_DNS}/utilities.bash"
+. "${SCRIPT_DIRECTORY_DNS}/logging.bash"
+. "${SCRIPT_DIRECTORY_DNS}/dependency-predicates.bash"
 
 # Private functions
 # --------------------------------------------------------------------------------------------------

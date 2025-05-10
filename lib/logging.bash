@@ -18,6 +18,11 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_LOGGING:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
 SCRIPT_DIRECTORY_LOGGING="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 

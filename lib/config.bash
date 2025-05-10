@@ -18,6 +18,11 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_CONFIG:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
 SCRIPT_DIRECTORY_CONFIG="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 readonly SCRIPT_DIRECTORY_CONFIG
@@ -36,10 +41,8 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_UTILITIES:-}" ]] && . "${SCRIPT_DIRECTORY_CONFIG}/utilities.bash"
-[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_CONFIG}/logging.bash"
+. "${SCRIPT_DIRECTORY_CONFIG}/utilities.bash"
+. "${SCRIPT_DIRECTORY_CONFIG}/logging.bash"
 
 # Private functions
 # --------------------------------------------------------------------------------------------------
@@ -51,7 +54,7 @@ function _load_config_into_env {
     current_project_directory="$(get_current_project_directory)"
 
     local env_path
-    env_path="${current_project_directory}/${DX_SCRIPTS_ENV_FILENAME:-".env"}"
+    env_path="${current_project_directory}/.env"
 
     if [[ -f "${env_path}" ]]; then
         set -o allexport

@@ -18,6 +18,11 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_UTILITIES:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
 SCRIPT_DIRECTORY_UTILITIES="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 readonly SCRIPT_DIRECTORY_UTILITIES
@@ -36,10 +41,8 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_UTILITIES}/logging.bash"
-[[ -z "${SCRIPT_DIRECTORY_PROMPTS:-}" ]] && . "${SCRIPT_DIRECTORY_UTILITIES}/prompts.bash"
+. "${SCRIPT_DIRECTORY_UTILITIES}/logging.bash"
+. "${SCRIPT_DIRECTORY_UTILITIES}/prompts.bash"
 
 # Public functions
 # --------------------------------------------------------------------------------------------------
@@ -130,7 +133,7 @@ function clean_git_ignored {
             printf "  %q\n" "${line}"
         done
 
-        confirm_user_consent_dangerous "Are you sure you want to remove these files?"
+        confirm_user_consent_safe "Are you sure you want to remove these files?"
 
         (cd "${project_directory}" && git clean -qfdX)
 

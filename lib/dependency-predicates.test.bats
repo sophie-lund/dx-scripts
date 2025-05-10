@@ -62,19 +62,23 @@ function setup {
 }
 
 @test "are_xcode_cli_tools_installed > smoke" {
-    if is_macos; then
-        run are_xcode_cli_tools_installed
-
-        assert_output ""
+    if ! is_macos; then
+        skip
     fi
+
+    run are_xcode_cli_tools_installed
+
+    assert_output ""
 }
 
 @test "is_xcode_installed > smoke" {
-    if is_macos; then
-        run is_xcode_installed
-
-        assert_output ""
+    if ! is_macos; then
+        skip
     fi
+
+    run is_xcode_installed
+
+    assert_output ""
 }
 
 @test "try_get_nvm_directory > smoke" {

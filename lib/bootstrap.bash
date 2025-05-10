@@ -18,6 +18,11 @@
 # Standard prelude - put this at the top of all scripts
 # --------------------------------------------------------------------------------------------------
 
+# Check if this script has already been sourced
+if [[ -n "${SCRIPT_DIRECTORY_BOOTSTRAP:-}" ]]; then
+    return 0
+fi
+
 # Get the directory of the current script
 SCRIPT_DIRECTORY_BOOTSTRAP="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 readonly SCRIPT_DIRECTORY_BOOTSTRAP
@@ -36,13 +41,11 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_UTILITIES:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/utilities.bash"
-[[ -z "${SCRIPT_DIRECTORY_LOGGING:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/logging.bash"
-[[ -z "${SCRIPT_DIRECTORY_PROMPTS:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/prompts.bash"
-[[ -z "${SCRIPT_DIRECTORY_DEPENDENCY_PREDICATES:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/dependency-predicates.bash"
-[[ -z "${SCRIPT_DIRECTORY_DEPENDENCIES:-}" ]] && . "${SCRIPT_DIRECTORY_BOOTSTRAP}/dependencies.bash"
+. "${SCRIPT_DIRECTORY_BOOTSTRAP}/utilities.bash"
+. "${SCRIPT_DIRECTORY_BOOTSTRAP}/logging.bash"
+. "${SCRIPT_DIRECTORY_BOOTSTRAP}/prompts.bash"
+. "${SCRIPT_DIRECTORY_BOOTSTRAP}/dependency-predicates.bash"
+. "${SCRIPT_DIRECTORY_BOOTSTRAP}/dependencies.bash"
 
 # Public functions
 # --------------------------------------------------------------------------------------------------
@@ -140,7 +143,7 @@ function ensure_dependencies_installed {
 
         # If there is an install command, run it
         if [[ -n "${install_command}" ]]; then
-            log_error "${name} must be installed for this project to work"
+            log_info "${name} must be installed for this project to work"
             printf "\n"
             printf "You can install it by running this command:\n"
             printf "\n"
@@ -163,7 +166,7 @@ function ensure_dependencies_installed {
         
         # If there is a fallback instructions URL, print it
         elif [[ -n "${fallback_instructions_url}" ]]; then
-            log_error "${name} must be installed for this project to work"
+            log_info "${name} must be installed for this project to work"
             printf "\n"
             printf "Please follow these instructions and re-run this setup:\n"
             printf "\n"
@@ -173,7 +176,7 @@ function ensure_dependencies_installed {
 
         # If there are fallback instructions, print them
         elif [[ -n "${fallback_instructions}" ]]; then
-            log_error "${name} must be installed for this project to work"
+            log_info "${name} must be installed for this project to work"
             printf "\n"
             printf "%s\n" "${fallback_instructions}"
             printf "\n"
@@ -230,7 +233,7 @@ function ensure_aws_profile_configured {
     fi
 
     if [[ -n "${error_message}" ]]; then
-        log_error "${error_message}"
+        log_info "${error_message}"
         printf "\n"
         printf "You can create it by running this command:\n"
         printf "\n"
