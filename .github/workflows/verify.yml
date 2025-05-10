@@ -9,8 +9,15 @@ on:
 
 jobs:
   lint:
-    name: Lint
-    runs-on: ubuntu-latest
+    strategy:
+      matrix: &matrix
+        runner:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+
+    name: Lint (${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout repository
@@ -25,8 +32,11 @@ jobs:
           just lint
 
   test:
-    name: Test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix: *matrix
+
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout repository
