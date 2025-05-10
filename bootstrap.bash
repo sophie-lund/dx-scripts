@@ -36,10 +36,8 @@ fi
 # Source dependencies
 # --------------------------------------------------------------------------------------------------
 
-# Check if the scripts have already been sourced using their 'SCRIPT_DIRECTORY_*' variables
-
-[[ -z "${SCRIPT_DIRECTORY_BOOTSTRAP:-}" ]] && . "${SCRIPT_DIRECTORY}/lib/bootstrap.bash"
-[[ -z "${SCRIPT_DIRECTORY_DEPENDENCIES:-}" ]] && . "${SCRIPT_DIRECTORY}/lib/dependencies.bash"
+. "${SCRIPT_DIRECTORY}/lib/bootstrap.bash"
+. "${SCRIPT_DIRECTORY}/lib/dependencies.bash"
 
 # Main function
 # --------------------------------------------------------------------------------------------------

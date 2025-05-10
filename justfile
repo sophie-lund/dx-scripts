@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License along with Sophie's DX Scripts.
 # If not, see <https://www.gnu.org/licenses/>.
 
-set shell := ["bash", "-c"]
-
 # Run tests (note that this skips slow tests, run 'test-all' to run those as well)
 test *forwarded_args:
     #!/usr/bin/env bash
