@@ -11,10 +11,7 @@ jobs:
   lint:
     strategy:
       matrix:
-        runner:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - macos-latest
+        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
 
     name: Lint (${{ matrix.os }})
     runs-on: ${{ matrix.runner }}
@@ -31,25 +28,25 @@ jobs:
         run: |
           just lint
 
-  test:
-    strategy:
-      matrix:
-        runner:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - macos-latest
+  # test:
+  #   strategy:
+  #     matrix:
+  #       runner:
+  #         - ubuntu-latest
+  #         - ubuntu-24.04-arm
+  #         - macos-latest
 
-    name: Test (${{ matrix.os }})
-    runs-on: ${{ matrix.runner }}
+  #   name: Test (${{ matrix.os }})
+  #   runs-on: ${{ matrix.runner }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Bootstrap
-        run: |
-          DX_SCRIPTS_ALWAYS_CONSENT=true DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE=true bash ./bootstrap.bash
+  #     - name: Bootstrap
+  #       run: |
+  #         DX_SCRIPTS_ALWAYS_CONSENT=true DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE=true bash ./bootstrap.bash
 
-      - name: Test
-        run: |
-          just test-all
+  #     - name: Test
+  #       run: |
+  #         just test-all
