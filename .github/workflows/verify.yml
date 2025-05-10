@@ -13,7 +13,7 @@ jobs:
       matrix:
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
 
-    name: Lint (${{ matrix.os }})
+    name: Lint (${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
 
     steps:
