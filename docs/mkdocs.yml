@@ -58,6 +58,8 @@ markdown_extensions:
 
 nav:
     - Intro: index.md
+    - Tutorial:
+        - Adding to your project: tutorial/adding-to-your-project.md
     - Reference:
         - Recommended script structure: reference/recommended-script-structure.md
         - Logging: reference/logging.md
