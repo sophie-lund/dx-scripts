@@ -42,6 +42,11 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     run_docker_compose build
     ```
 
+    Docker Compose will always have access to these two environment variables which are overridden by DX Scripts when calling `docker compose`:
+
+     * `DX_SCRIPTS_PROJECT_DIRECTORY`: This will always be the current project directory.
+     * `DX_SCRIPTS_DOCKER_COMPOSE_DIRECTORY`: This will always be the directory where the `docker-compose.yml` file is located.
+
 === "Usage"
 
     **Usage:** `run_docker_compose [args...]`

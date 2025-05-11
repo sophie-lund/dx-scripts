@@ -44,6 +44,7 @@ fi
 . "${SCRIPT_DIRECTORY_DOCKER}/utilities.bash"
 . "${SCRIPT_DIRECTORY_DOCKER}/logging.bash"
 . "${SCRIPT_DIRECTORY_DOCKER}/prompts.bash"
+. "${SCRIPT_DIRECTORY_DOCKER}/config.bash"
 
 # Private functions
 # --------------------------------------------------------------------------------------------------
@@ -165,7 +166,7 @@ function run_docker_compose {
         # We explicitly want additional_args to be tokenized
         # shellcheck disable=SC2086
         cd "${current_project_directory}" &&
-        docker compose \
+        DX_SCRIPTS_PROJECT_DIRECTORY="${current_project_directory}" DX_SCRIPTS_DOCKER_COMPOSE_DIRECTORY="$(dirname "${docker_compose_path}")" docker compose \
             --file "${docker_compose_path}" \
             --env-file "${env_path}" \
             ${additional_args} \

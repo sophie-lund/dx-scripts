@@ -81,8 +81,10 @@ function capture_command_output {
 }
 
 function get_current_project_directory {
+    # We cannot use get_config_value here because it creates an infinite recursion
+
     local override
-    override="$(get_config_value DX_SCRIPTS_PROJECT_DIRECTORY)"
+    override="${DX_SCRIPTS_PROJECT_DIRECTORY:-}"
 
     if [[ -n "${override}" ]]; then
         printf "%s" "${override}"
@@ -97,7 +99,7 @@ function get_current_project_directory {
             return 0
         fi
 
-        if [[ "${current_directory}" != "/" ]]; then
+        if [[ -n "${current_directory}" ]] && [[ "${current_directory}" != "/" ]]; then
             current_directory="$(realpath "${current_directory}/..")"
         else
             break
