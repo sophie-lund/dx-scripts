@@ -925,7 +925,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/utilities.bash"><code>utilities.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="print_output_on_error"><code>print_output_on_error</code><a class="headerlink" href="#print_output_on_error" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Runs a command and silences the output unless it exits with a non-zero exit code. Then it will print the command's combined output to <code>stdout</code> and <code>stderr</code> both to both<code>stdout</code>.</p>
@@ -943,6 +943,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>It will return 0 if the command succeeds, and 1 if it fails.</p>
 </div>
 <div class="tabbed-block">
@@ -951,7 +954,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="capture_command_output"><code>capture_command_output</code><a class="headerlink" href="#capture_command_output" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Return codes</label><label for="__tabbed_2_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Environment variables</label><label for="__tabbed_2_4">Return codes</label><label for="__tabbed_2_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Runs a command and captures both the output to <code>stdout</code> and the exit status. <code>stderr</code> is not captured.</p>
@@ -981,6 +984,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>It will always return 0.</p>
 </div>
 <div class="tabbed-block">
@@ -989,7 +995,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="get_current_project_directory"><code>get_current_project_directory</code><a class="headerlink" href="#get_current_project_directory" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Return codes</label><label for="__tabbed_3_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Environment variables</label><label for="__tabbed_3_4">Return codes</label><label for="__tabbed_3_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>It finds and prints the current project directory. It looks for the highest-level Git repository relative to the <code>utilities.bash</code> script directory. If a parent Git repository is a submodule, it will find the parent Git repository.</p>
@@ -1005,6 +1011,11 @@ You should have received a copy of the GNU General Public License along with DX 
 <p>This function takes no arguments.</p>
 </div>
 <div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_PROJECT_DIRECTORY</code>: Can be used to override the current project directory. If set, it will be used instead of the Git repository.</li>
+</ul>
+</div>
+<div class="tabbed-block">
 <p>It will always return 0.</p>
 </div>
 <div class="tabbed-block">
@@ -1013,7 +1024,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="clean_git_ignored"><code>clean_git_ignored</code><a class="headerlink" href="#clean_git_ignored" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Return codes</label><label for="__tabbed_4_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:5"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><input id="__tabbed_4_5" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Environment variables</label><label for="__tabbed_4_4">Return codes</label><label for="__tabbed_4_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Deletes all files in the current project directory (see [<code>get_current_project_directory](#get_current_project_directory)]) that are ignored in the Git repository via</code>.gitignore`.</p>
@@ -1028,6 +1039,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 <div class="tabbed-block">
 <p>This function takes no arguments.</p>
+</div>
+<div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
 </div>
 <div class="tabbed-block">
 <p>It will always return 0 unless there is an error with <code>git</code>.</p>

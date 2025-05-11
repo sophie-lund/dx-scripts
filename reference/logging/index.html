@@ -943,7 +943,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/logging.bash"><code>logging.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="log_info"><code>log_info</code><a class="headerlink" href="#log_info" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs an informative message to the console.</p>
@@ -959,6 +959,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>It will always return 0.</p>
 </div>
 <div class="tabbed-block">
@@ -972,7 +975,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="log_warning"><code>log_warning</code><a class="headerlink" href="#log_warning" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Return codes</label><label for="__tabbed_2_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Environment variables</label><label for="__tabbed_2_4">Return codes</label><label for="__tabbed_2_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs a warning message to the console.</p>
@@ -988,6 +991,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>It will always return 0.</p>
 </div>
 <div class="tabbed-block">
@@ -1001,7 +1007,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="log_error"><code>log_error</code><a class="headerlink" href="#log_error" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Return codes</label><label for="__tabbed_3_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Environment variables</label><label for="__tabbed_3_4">Return codes</label><label for="__tabbed_3_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs a error message to the console. This will <strong><em>not</em></strong> exit the script.</p>
@@ -1017,6 +1023,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>It will always return 0.</p>
 </div>
 <div class="tabbed-block">
@@ -1030,7 +1039,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="die"><code>die</code><a class="headerlink" href="#die" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Return codes</label><label for="__tabbed_4_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:5"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><input id="__tabbed_4_5" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Environment variables</label><label for="__tabbed_4_4">Return codes</label><label for="__tabbed_4_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs a error message to the console and exits the script with exit code 1.</p>
@@ -1046,6 +1055,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
+</div>
+<div class="tabbed-block">
 <p>N/A since it will always exit the script with exit code 1.</p>
 </div>
 <div class="tabbed-block">
@@ -1054,7 +1066,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="run_steps"><code>run_steps</code><a class="headerlink" href="#run_steps" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:4"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><input id="__tabbed_5_4" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Description</label><label for="__tabbed_5_2">Usage</label><label for="__tabbed_5_3">Return codes</label><label for="__tabbed_5_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:5"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><input id="__tabbed_5_4" name="__tabbed_5" type="radio" /><input id="__tabbed_5_5" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Description</label><label for="__tabbed_5_2">Usage</label><label for="__tabbed_5_3">Environment variables</label><label for="__tabbed_5_4">Return codes</label><label for="__tabbed_5_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Runs a series of steps and logs their progress to the console. This is useful for long-running processes that can easily be broken down.</p>
@@ -1179,6 +1191,9 @@ You should have received a copy of the GNU General Public License along with DX 
 <li><code>"enabled"</code> must print a string which is either <code>"true"</code> or <code>"false"</code>. This will determine if the step is run or not.</li>
 <li><code>"run"</code> is where the actual work is done. This function will be run if the <code>"enabled"</code> case returns <code>"true"</code>. </li>
 </ul>
+</div>
+<div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
 </div>
 <div class="tabbed-block">
 <p>It will return 0 if all steps are run successfully, otherwise it will return the error return code of the failed step.</p>

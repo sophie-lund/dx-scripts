@@ -907,7 +907,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/bootstrap.bash"><code>bootstrap.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="ensure_dependencies_installed"><code>ensure_dependencies_installed</code><a class="headerlink" href="#ensure_dependencies_installed" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Takes in a list of dependencies and makes sure that they are all installed on the local system.</p>
@@ -926,18 +926,25 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE</code>: If set to <code>true</code>, the script will not attempt to upgrade any dependencies. This is useful for debugging or if you want to skip the upgrade process.</li>
+</ul>
+</div>
+<div class="tabbed-block">
 <p>It will return 0 on success and a non-zero value if anything fails.</p>
 </div>
 <div class="tabbed-block">
-<p>It will throw an error if:
- * any of the dependencies are not declared correctly.
- * any dependencies are listed more than once.
- * dependencies are not installed in the right order.</p>
+<p>It will throw an error if:</p>
+<ul>
+<li>any of the dependencies are not declared correctly.</li>
+<li>any dependencies are listed more than once.</li>
+<li>dependencies are not installed in the right order.</li>
+</ul>
 </div>
 </div>
 </div>
 <h2 id="ensure_aws_profile_configured"><code>ensure_aws_profile_configured</code><a class="headerlink" href="#ensure_aws_profile_configured" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Return codes</label><label for="__tabbed_2_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Environment variables</label><label for="__tabbed_2_4">Return codes</label><label for="__tabbed_2_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Ensures that the provided AWS profile is configured in the <code>~/.aws/config</code> file.</p>
@@ -964,6 +971,11 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </div>
 <div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_AWS_CONFIG_PATH</code>: The path to the AWS config file. If not set, it will default to <code>~/.aws/config</code>.</li>
+</ul>
+</div>
+<div class="tabbed-block">
 <p>It will return 0 on success and a non-zero value if anything fails.</p>
 </div>
 <div class="tabbed-block">
@@ -972,7 +984,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="ensure_etc_hosts_entries_configured"><code>ensure_etc_hosts_entries_configured</code><a class="headerlink" href="#ensure_etc_hosts_entries_configured" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Return codes</label><label for="__tabbed_3_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Environment variables</label><label for="__tabbed_3_4">Return codes</label><label for="__tabbed_3_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Ensures that all the provided hosts all point to localhost in the <code>/etc/hosts</code> file.</p>
@@ -987,6 +999,9 @@ You should have received a copy of the GNU General Public License along with DX 
 <ul>
 <li><code>&lt;hosts...&gt;</code>: A list of hosts to check.</li>
 </ul>
+</div>
+<div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
 </div>
 <div class="tabbed-block">
 <p>It will return 0 on success and a non-zero value if anything fails.</p>

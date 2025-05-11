@@ -871,7 +871,7 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/cxx.bash"><code>cxx.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="build_cxx"><code>build_cxx</code><a class="headerlink" href="#build_cxx" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Builds a C++ project. That uses CMake and Conan 2. It requires that:</p>
@@ -900,6 +900,9 @@ You should have received a copy of the GNU General Public License along with DX 
 </ul>
 </li>
 </ul>
+</div>
+<div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
 </div>
 <div class="tabbed-block">
 <p>It will return 0 if the build was successful and a non-zero value if it was not.</p>

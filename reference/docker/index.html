@@ -1033,19 +1033,25 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/docker.bash"><code>docker.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="run_docker_compose"><code>run_docker_compose</code><a class="headerlink" href="#run_docker_compose" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Runs the <code>docker compose</code> command with forwarded arguments, but makes sure that the env file and the correct <code>docker-compose.yml</code> file are used.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>run_docker_compose<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>build
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>run_docker_compose<span class="w"> </span>build
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>run_docker_compose &lt;compose file&gt; [args...]</code></p>
-<p>This function takes one positional argument, the path of <code>docker-compose.yml</code> relative to your project directory. It then takes any number of arguments that are forwarded to the <code>docker compose</code> command.</p>
+<p><strong>Usage:</strong> <code>run_docker_compose [args...]</code></p>
+<p>It takes any number of arguments that are forwarded to the <code>docker compose</code> command.</p>
 <p>For example, in this command <code>ps -a</code> are forwarded to <code>docker compose</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>run_docker_compose<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>ps<span class="w"> </span>-a
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>run_docker_compose<span class="w"> </span>ps<span class="w"> </span>-a
 </span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
+</ul>
 </div>
 <div class="tabbed-block">
 <p>It will return the same exit status as the <code>docker compose</code> command.</p>
@@ -1053,21 +1059,27 @@ You should have received a copy of the GNU General Public License along with DX 
 <div class="tabbed-block">
 <p>It will exit the script with exit code 1 if:
  * The env file does not exist.
- * <code>COMPOSE_PROJECT_NAME</code> is not set in the env file for the project.</p>
+ * <code>COMPOSE_PROJECT_NAME</code> is not set in the env file for the project.
+ * <code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code> is not set in the env file for the project.</p>
 </div>
 </div>
 </div>
 <h2 id="is_docker_compose_project_running"><code>is_docker_compose_project_running</code><a class="headerlink" href="#is_docker_compose_project_running" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Return codes</label><label for="__tabbed_2_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Environment variables</label><label for="__tabbed_2_4">Return codes</label><label for="__tabbed_2_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Checks if the Docker Compose project is currently running. If there is at least one container running, it will consider the project to be running.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>is_docker_compose_project_running<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>is_docker_compose_project_running
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>is_docker_compose_project_running &lt;compose file&gt;</code></p>
-<p>This function takes one positional argument, the path of <code>docker-compose.yml</code> relative to your project directory.</p>
+<p><strong>Usage:</strong> <code>is_docker_compose_project_running</code></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
+</ul>
 </div>
 <div class="tabbed-block">
 <p>It will return 0 if the project is running and 1 if it is not running.</p>
@@ -1078,16 +1090,21 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="docker_clean_volumes"><code>docker_clean_volumes</code><a class="headerlink" href="#docker_clean_volumes" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Return codes</label><label for="__tabbed_3_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Environment variables</label><label for="__tabbed_3_4">Return codes</label><label for="__tabbed_3_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Deletes any volumes that are used by the project. This only works when the project is not running. It will ask for user confirmation.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker_clean_volumes<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker_clean_volumes
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>docker_clean_volumes &lt;compose file&gt;</code></p>
-<p>This function takes one positional argument, the path of <code>docker-compose.yml</code> relative to your project directory.</p>
+<p><strong>Usage:</strong> <code>docker_clean_volumes</code></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
+</ul>
 </div>
 <div class="tabbed-block">
 <p>It will return 0 on success and a non-zero exit code on failure, such as if the project is still running.</p>
@@ -1098,25 +1115,30 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="docker_compose_down"><code>docker_compose_down</code><a class="headerlink" href="#docker_compose_down" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Return codes</label><label for="__tabbed_4_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:5"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><input id="__tabbed_4_5" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Description</label><label for="__tabbed_4_2">Usage</label><label for="__tabbed_4_3">Environment variables</label><label for="__tabbed_4_4">Return codes</label><label for="__tabbed_4_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Brings down Docker Compose containers. It can either bring down just one container by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker_compose_down<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker_compose_down<span class="w"> </span>my-container
 </span></code></pre></div>
 <p>Or all of them at once by omitting the name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker_compose_down<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker_compose_down
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>docker_compose_down &lt;compose file&gt; [container name]</code></p>
+<p><strong>Usage:</strong> <code>docker_compose_down [container name]</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;compose file</code>&gt;: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
 <li><code>[container name]</code>: The name of the container to bring down <em>(optional)</em>.<ul>
 <li>If omitted, all containers will be brought down.</li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1128,26 +1150,31 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="docker_compose_up"><code>docker_compose_up</code><a class="headerlink" href="#docker_compose_up" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:4"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><input id="__tabbed_5_4" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Description</label><label for="__tabbed_5_2">Usage</label><label for="__tabbed_5_3">Return codes</label><label for="__tabbed_5_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:5"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><input id="__tabbed_5_4" name="__tabbed_5" type="radio" /><input id="__tabbed_5_5" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Description</label><label for="__tabbed_5_2">Usage</label><label for="__tabbed_5_3">Environment variables</label><label for="__tabbed_5_4">Return codes</label><label for="__tabbed_5_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Brings up Docker Compose containers. It can either bring up just one container by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker_compose_up<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker_compose_up<span class="w"> </span>my-container
 </span></code></pre></div>
 <p>Or all of them at once by omitting the name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker_compose_up<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker_compose_up
 </span></code></pre></div>
 <p>It will also re-build or pull any images that are used in the project.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>docker_compose_up &lt;compose file&gt; [container name]</code></p>
+<p><strong>Usage:</strong> <code>docker_compose_up [container name]</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;compose file&gt;</code>: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
 <li><code>[container name]</code>: The name of the container to bring up <em>(optional)</em>.<ul>
 <li>If omitted, all containers will be brought up.</li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1159,26 +1186,31 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="docker_compose_restart"><code>docker_compose_restart</code><a class="headerlink" href="#docker_compose_restart" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:4"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><input id="__tabbed_6_4" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Description</label><label for="__tabbed_6_2">Usage</label><label for="__tabbed_6_3">Return codes</label><label for="__tabbed_6_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:5"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><input id="__tabbed_6_4" name="__tabbed_6" type="radio" /><input id="__tabbed_6_5" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Description</label><label for="__tabbed_6_2">Usage</label><label for="__tabbed_6_3">Environment variables</label><label for="__tabbed_6_4">Return codes</label><label for="__tabbed_6_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Restarts Docker Compose containers. It can either restart just one container by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker_compose_restart<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker_compose_restart<span class="w"> </span>my-container
 </span></code></pre></div>
 <p>Or all of them at once by omitting the name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker_compose_restart<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker_compose_restart
 </span></code></pre></div>
 <p>This is equivalent to calling <code>docker_compose_down</code> and then <code>docker_compose_up</code> immediately after.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>docker_compose_restart &lt;compose file&gt; [container name]</code></p>
+<p><strong>Usage:</strong> <code>docker_compose_restart [container name]</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;compose file</code>&gt;: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
 <li><code>[container name]</code>: The name of the container to restart <em>(optional)</em>.<ul>
 <li>If omitted, all containers will be restarted.</li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1190,25 +1222,30 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="tail_docker_compose_logs"><code>tail_docker_compose_logs</code><a class="headerlink" href="#tail_docker_compose_logs" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="7:4"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><input id="__tabbed_7_4" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Description</label><label for="__tabbed_7_2">Usage</label><label for="__tabbed_7_3">Return codes</label><label for="__tabbed_7_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:5"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><input id="__tabbed_7_4" name="__tabbed_7" type="radio" /><input id="__tabbed_7_5" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Description</label><label for="__tabbed_7_2">Usage</label><label for="__tabbed_7_3">Environment variables</label><label for="__tabbed_7_4">Return codes</label><label for="__tabbed_7_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Watches the logs of Docker Compose containers. You can either watch the logs of just one container by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>tail_docker_compose_logs<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>tail_docker_compose_logs<span class="w"> </span>my-container
 </span></code></pre></div>
 <p>Or all of them at once by omitting the name:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>tail_docker_compose_logs<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>tail_docker_compose_logs
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>tail_docker_compose_logs &lt;compose file&gt; [container name]</code></p>
+<p><strong>Usage:</strong> <code>tail_docker_compose_logs [container name]</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;compose file&gt;</code>: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
 <li><code>[container name]</code>: The name of the container to watch <em>(optional)</em>.<ul>
 <li>If omitted, all containers will be watched.</li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1220,28 +1257,33 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="exec_docker_compose_shell"><code>exec_docker_compose_shell</code><a class="headerlink" href="#exec_docker_compose_shell" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="8:4"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><input id="__tabbed_8_4" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Description</label><label for="__tabbed_8_2">Usage</label><label for="__tabbed_8_3">Return codes</label><label for="__tabbed_8_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:5"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><input id="__tabbed_8_4" name="__tabbed_8" type="radio" /><input id="__tabbed_8_5" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Description</label><label for="__tabbed_8_2">Usage</label><label for="__tabbed_8_3">Environment variables</label><label for="__tabbed_8_4">Return codes</label><label for="__tabbed_8_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Enters an interactive shell in a Docker Compose container.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>exec_docker_compose_shell<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>exec_docker_compose_shell<span class="w"> </span>my-container
 </span></code></pre></div>
 <p>You can also pass in a command to run in the container:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>exec_docker_compose_shell<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>my-container<span class="w"> </span><span class="s2">&quot;echo hello, world&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>exec_docker_compose_shell<span class="w"> </span>my-container<span class="w"> </span><span class="s2">&quot;echo hello, world&quot;</span>
 </span></code></pre></div>
 <p>It must be passed in as a single string argument, like above.</p>
 <p>It will try to use <code>/bin/bash</code> if it is available, otherwise it will fall back to <code>/bin/sh</code>.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>exec_docker_compose_shell &lt;compose file&gt; &lt;container name&gt; [command]</code></p>
+<p><strong>Usage:</strong> <code>exec_docker_compose_shell &lt;container name&gt; [command]</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;compose file&gt;</code>: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
 <li><code>&lt;container name&gt;</code>: The name of the container to shell into.</li>
 <li><code>[command]</code>: The command to run in the container <em>(optional)</em>.<ul>
 <li>If omitted, an interactive shell will be opened.</li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1253,18 +1295,20 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="print_docker_compose_status"><code>print_docker_compose_status</code><a class="headerlink" href="#print_docker_compose_status" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="9:4"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><input id="__tabbed_9_4" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">Description</label><label for="__tabbed_9_2">Usage</label><label for="__tabbed_9_3">Return codes</label><label for="__tabbed_9_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:5"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><input id="__tabbed_9_4" name="__tabbed_9" type="radio" /><input id="__tabbed_9_5" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">Description</label><label for="__tabbed_9_2">Usage</label><label for="__tabbed_9_3">Environment variables</label><label for="__tabbed_9_4">Return codes</label><label for="__tabbed_9_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Prints the status of all of the containers in a Docker Compose project.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>print_docker_compose_status<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>print_docker_compose_status
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>print_docker_compose_status &lt;compose file&gt;</code></p>
-<p><strong>Options:</strong></p>
+<p><strong>Usage:</strong> <code>print_docker_compose_status</code></p>
+</div>
+<div class="tabbed-block">
 <ul>
-<li><code>&lt;compose file&gt;</code>: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -1277,18 +1321,20 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="watch_docker_compose_status"><code>watch_docker_compose_status</code><a class="headerlink" href="#watch_docker_compose_status" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="10:4"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><input id="__tabbed_10_4" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">Description</label><label for="__tabbed_10_2">Usage</label><label for="__tabbed_10_3">Return codes</label><label for="__tabbed_10_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:5"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><input id="__tabbed_10_4" name="__tabbed_10" type="radio" /><input id="__tabbed_10_5" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">Description</label><label for="__tabbed_10_2">Usage</label><label for="__tabbed_10_3">Environment variables</label><label for="__tabbed_10_4">Return codes</label><label for="__tabbed_10_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Watches the status of all of the containers in a Docker Compose project, updating every 5 seconds.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>watch_docker_compose_status<span class="w"> </span>docker/docker-compose.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>watch_docker_compose_status
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>watch_docker_compose_status &lt;compose file&gt;</code></p>
-<p><strong>Options:</strong></p>
+<p><strong>Usage:</strong> <code>watch_docker_compose_status</code></p>
+</div>
+<div class="tabbed-block">
 <ul>
-<li><code>&lt;compose file&gt;</code>: The path of <code>docker-compose.yml</code> relative to your project directory.</li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH</code>: The path to the <code>docker-compose.yml</code> file relative to the current project directory. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS</code>: Any additional arguments to pass to the <code>docker compose</code> command. <em>(optional)</em></li>
 </ul>
 </div>
 <div class="tabbed-block">

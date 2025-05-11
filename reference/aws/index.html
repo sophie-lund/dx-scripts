@@ -907,31 +907,34 @@ You should have received a copy of the GNU General Public License along with DX 
 </span></span></code></pre></div>
 <p>See <a href="https://github.com/sophie-lund/dx-scripts/blob/main/lib/aws.bash"><code>aws.bash</code></a> for the full implementations of these functions.</p>
 <h2 id="list_aws_environment_names"><code>list_aws_environment_names</code><a class="headerlink" href="#list_aws_environment_names" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Return codes</label><label for="__tabbed_1_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Description</label><label for="__tabbed_1_2">Usage</label><label for="__tabbed_1_3">Environment variables</label><label for="__tabbed_1_4">Return codes</label><label for="__tabbed_1_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Lists the names of all of the AWS environments configured on the local system.</p>
 <p>It does this by looking at the <code>~/.aws/config</code> file and filtering the names by the prefix provided.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>list_aws_environment_names<span class="w"> </span>my-project
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>list_aws_environment_names
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>development
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>staging
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>production
 </span></code></pre></div>
-<p>You can override the path to the AWS config file by setting the <code>DX_SCRIPTS_AWS_CONFIG_PATH</code> environment variable.</p>
+<p>You need to provide the <code>DX_SCRIPTS_AWS_PROFILE_PREFIX</code> environment variable for this to work. It is a prefix for profiles to filter by.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>list_aws_environment_names &lt;prefix&gt;</code></p>
-<p><strong>Options:</strong></p>
+<p><strong>Usage:</strong> <code>list_aws_environment_names</code></p>
+</div>
+<div class="tabbed-block">
 <ul>
-<li><code>&lt;prefix&gt;</code>: The prefix to filter the environment names by. This is usually the name of the project.</li>
+<li><code>DX_SCRIPTS_AWS_PROFILE_PREFIX</code>: The prefix to filter the environment names by. This is usually the name of the project. <em>(required)</em></li>
+<li><code>DX_SCRIPTS_AWS_CONFIG_PATH</code>: The path to the AWS config file. If not set, it will default to <code>~/.aws/config</code>.</li>
 </ul>
 </div>
 <div class="tabbed-block">
 <p>It will return:</p>
 <ul>
 <li>0 on success.</li>
-<li>1 if there is no <code>~/.aws/config</code> file.</li>
-<li>2 if there are no profiles starting with <code>&lt;prefix&gt;</code>.</li>
+<li>1 if <code>DX_SCRIPTS_AWS_PROFILE_PREFIX</code> is not set.</li>
+<li>2 if there is no <code>~/.aws/config</code> file.</li>
+<li>3 if there are no profiles starting with <code>&lt;prefix&gt;</code>.</li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -940,30 +943,33 @@ You should have received a copy of the GNU General Public License along with DX 
 </div>
 </div>
 <h2 id="login_to_aws_sso"><code>login_to_aws_sso</code><a class="headerlink" href="#login_to_aws_sso" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Return codes</label><label for="__tabbed_2_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Description</label><label for="__tabbed_2_2">Usage</label><label for="__tabbed_2_3">Environment variables</label><label for="__tabbed_2_4">Return codes</label><label for="__tabbed_2_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs into an AWS SSO environment.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>login_to_aws_sso<span class="w"> </span>my-project<span class="w"> </span>development
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>login_to_aws_sso<span class="w"> </span>development
 </span></code></pre></div>
 <p>See <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a> for more information on how environments are resolved.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Usage:</strong> <code>login_to_aws_sso &lt;prefix&gt; &lt;environment&gt;</code></p>
+<p><strong>Usage:</strong> <code>login_to_aws_sso &lt;environment&gt;</code></p>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>&lt;prefix&gt;</code>: The prefix to filter the environment names by. This is usually the name of the project.</li>
 <li><code>&lt;environment&gt;</code>: The name of the environment to log in to.</li>
 </ul>
+</div>
+<div class="tabbed-block">
+<p>See <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a> for more information on the environment variables used.</p>
 </div>
 <div class="tabbed-block">
 <p>See <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a> for more information on the return codes.
 It will return:</p>
 <ul>
 <li>0 on success.</li>
-<li>1 if there is no <code>~/.aws/config</code> file. <em>(from <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a>)</em></li>
-<li>2 if there are no profiles starting with <code>&lt;prefix&gt;</code>. <em>(from <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a>)</em></li>
-<li>3 if the environment is not found.</li>
+<li>1 if <code>DX_SCRIPTS_AWS_PROFILE_PREFIX</code> is not set. <em>(from <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a>)</em></li>
+<li>2 if there is no <code>~/.aws/config</code> file. <em>(from <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a>)</em></li>
+<li>3 if there are no profiles starting with <code>&lt;prefix&gt;</code>. <em>(from <a href="#list_aws_environment_names"><code>list_aws_environment_names</code></a>)</em></li>
+<li>4 if the environment is not found.</li>
 </ul>
 </div>
 <div class="tabbed-block">
@@ -972,7 +978,7 @@ It will return:</p>
 </div>
 </div>
 <h2 id="login_to_aws_endpoint"><code>login_to_aws_endpoint</code><a class="headerlink" href="#login_to_aws_endpoint" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Return codes</label><label for="__tabbed_3_4">Errors</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Description</label><label for="__tabbed_3_2">Usage</label><label for="__tabbed_3_3">Environment variables</label><label for="__tabbed_3_4">Return codes</label><label for="__tabbed_3_5">Errors</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Logs into a specific local endpoint that is compatible with the AWS API.</p>
@@ -987,6 +993,9 @@ It will return:</p>
 <li><code>&lt;endpoint url&gt;</code>: The URL to log into.</li>
 <li><code>&lt;region&gt;</code>: The AWS region to use. For most endpoints, this doesn't matter.</li>
 </ul>
+</div>
+<div class="tabbed-block">
+<p>This function does not use any environment variables.</p>
 </div>
 <div class="tabbed-block">
 <p>It will always return 0.</p>
