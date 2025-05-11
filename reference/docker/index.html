@@ -1039,6 +1039,11 @@ You should have received a copy of the GNU General Public License along with DX 
 <p>Runs the <code>docker compose</code> command with forwarded arguments, but makes sure that the env file and the correct <code>docker-compose.yml</code> file are used.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>run_docker_compose<span class="w"> </span>build
 </span></code></pre></div>
+<p>Docker Compose will always have access to these two environment variables which are overridden by DX Scripts when calling <code>docker compose</code>:</p>
+<ul>
+<li><code>DX_SCRIPTS_PROJECT_DIRECTORY</code>: This will always be the current project directory.</li>
+<li><code>DX_SCRIPTS_DOCKER_COMPOSE_DIRECTORY</code>: This will always be the directory where the <code>docker-compose.yml</code> file is located.</li>
+</ul>
 </div>
 <div class="tabbed-block">
 <p><strong>Usage:</strong> <code>run_docker_compose [args...]</code></p>
