@@ -2,18 +2,18 @@
 
 # Copyright 2025 Sophie Lund
 #
-# This file is part of Sophie's DX Scripts.
+# This file is part of DX Scripts.
 #
-# Sophie's DX Scripts is free software: you can redistribute it and/or modify it under the terms of
-# the GNU General Public License as published by the Free Software Foundation, either version 3 of
-# the License, or (at your option) any later version.
+# DX Scripts is free software: you can redistribute it and/or modify it under the terms of the GNU
+# General Public License as published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
-# Sophie's DX Scripts is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
+# DX Scripts is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along with Sophie's DX Scripts.
-# If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along with DX Scripts. If not,
+# see <https://www.gnu.org/licenses/>.
 
 . "./lib/dependency-predicates.bash"
 
