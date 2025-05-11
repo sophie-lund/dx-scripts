@@ -33,7 +33,7 @@ Then, add this line to your `.gitmodules` file:
 [submodule "scripts/dx-scripts"]
 	path = scripts/dx-scripts
 	url = https://github.com/sophie-lund/dx-scripts.git
-	fetchRecurseSubmodules = no-recurse-submodules
+	fetchRecurseSubmodules = false
 ```
 
 This will prevent Git from also fetching DX Scripts' submodules which are not needed for consumers of DX Scripts and will just clutter up your repository.
@@ -55,8 +55,7 @@ ensure_dependencies_installed \
     dependency_xcode_cli_tools \
     dependency_git \
     dependency_homebrew \
-    dependency_just \
-;
+    dependency_just
 ```
 
 Here's a breakdown of what's going on:
