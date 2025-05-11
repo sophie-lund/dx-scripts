@@ -49,14 +49,16 @@ fi
 # --------------------------------------------------------------------------------------------------
 
 function list_aws_environment_names {
-    local prefix="${1}"
+    local prefix
+    prefix="$(require_config_value DX_SCRIPTS_AWS_PROFILE_PREFIX)"
 
-    local aws_config_path=${DX_SCRIPTS_AWS_CONFIG_PATH:-"${HOME}/.aws/config"}
-    
+    local aws_config_path
+    aws_config_path="$(get_config_value DX_SCRIPTS_AWS_CONFIG_PATH "${HOME}/.aws/config")"
+
     # If there is no AWS config file, then there are no profiles - return early
     if [[ ! -f "${aws_config_path}" ]]; then
         log_error "No AWS config file found at ${aws_config_path}"
-        return 1
+        return 2
     fi
 
     local results
@@ -64,7 +66,7 @@ function list_aws_environment_names {
 
     if [[ -z "${results}" ]]; then
         log_error "No AWS profiles found with prefix '${prefix}'"
-        return 2
+        return 3
     fi
 
     # Print the results to stdout
@@ -72,12 +74,14 @@ function list_aws_environment_names {
 }
 
 function login_to_aws_sso {
-    local prefix="${1}"
-    local environment="${2}"
+    local environment="${1}"
+
+    local prefix
+    prefix="$(require_config_value DX_SCRIPTS_AWS_PROFILE_PREFIX)"
 
     # Do error checking against the list of available environment names
     local environment_names=""
-    if capture_command_output list_aws_environment_names "${prefix}"; then
+    if capture_command_output list_aws_environment_names; then
         # This is set by capture_command_output
         # shellcheck disable=SC2154
         environment_names="${CAPTURE_STDOUT}"
@@ -89,7 +93,7 @@ function login_to_aws_sso {
 
     if ! grep -qiE "^${environment}$" <<< "${environment_names}"; then
         log_error "No AWS profile found for environment '${environment}'"
-        return 3
+        return 4
     fi
 
     # Unset any existing AWS credentials
@@ -99,7 +103,7 @@ function login_to_aws_sso {
     unset AWS_ENDPOINT_URL
 
     # Log in
-    if aws --profile "${prefix}${environment}" sts get-caller-identity > /dev/null 2>&1; then
+    if aws --profile "${}${environment}" sts get-caller-identity > /dev/null 2>&1; then
         log_info "Already logged in to AWS - setting profile to '${prefix}${environment}'"
     else
         aws sso login --profile "${prefix}${environment}" || return 4

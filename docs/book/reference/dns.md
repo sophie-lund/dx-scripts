@@ -46,6 +46,10 @@ See [`dns.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dns.bas
 
      This function does not take any arguments.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.

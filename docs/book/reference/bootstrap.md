@@ -55,6 +55,10 @@ See [`bootstrap.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/b
 
      * `<dependencies...>`: A list of dependencies to check.
 
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE`: If set to `true`, the script will not attempt to upgrade any dependencies. This is useful for debugging or if you want to skip the upgrade process.
+
 === "Return codes"
 
     It will return 0 on success and a non-zero value if anything fails.
@@ -62,6 +66,7 @@ See [`bootstrap.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/b
 === "Errors"
 
     It will throw an error if:
+
      * any of the dependencies are not declared correctly.
      * any dependencies are listed more than once.
      * dependencies are not installed in the right order.
@@ -97,6 +102,10 @@ See [`bootstrap.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/b
      * `<account name>`: The name of the account to use for the profile.
      * `<profile name>`: What to call the profile.
 
+=== "Environment variables"
+
+    * `DX_SCRIPTS_AWS_CONFIG_PATH`: The path to the AWS config file. If not set, it will default to `~/.aws/config`.
+
 === "Return codes"
 
     It will return 0 on success and a non-zero value if anything fails.
@@ -124,6 +133,10 @@ See [`bootstrap.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/b
     **Options:**
 
      * `<hosts...>`: A list of hosts to check.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 

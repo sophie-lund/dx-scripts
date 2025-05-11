@@ -53,6 +53,10 @@ See [`utilities.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/u
 
      * `<command...>`: The command to run, as-is. Note that pipes will not be included in the command by default.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return 0 if the command succeeds, and 1 if it fails.
@@ -95,6 +99,10 @@ See [`utilities.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/u
 
      * `<command...>`: The command to run, as-is. Note that pipes will not be included in the command by default.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.
@@ -122,6 +130,10 @@ See [`utilities.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/u
 === "Usage"
 
      This function takes no arguments.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_PROJECT_DIRECTORY`: Can be used to override the current project directory. If set, it will be used instead of the Git repository.
 
 === "Return codes"
 
@@ -151,6 +163,10 @@ See [`utilities.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/u
 === "Usage"
 
      This function takes no arguments.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 

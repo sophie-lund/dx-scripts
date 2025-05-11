@@ -47,8 +47,6 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
 
     If the user does not consent, it will simply exit the script with exit code 1 so that you do not have to handle the result with an if statement.
 
-    You can set `DX_SCRIPTS_ALWAYS_CONSENT` to `"true"` to always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
-
 === "Usage"
 
     **Usage:** `confirm_user_consent_neutral <message>`
@@ -56,6 +54,10 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
     **Options:**
 
      * `<message>`: The message to print to the user - this is usually a question.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_ALWAYS_CONSENT`: If set to `"true"`, the script will always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
 
 === "Return codes"
 
@@ -85,8 +87,6 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
 
     If the user does not consent, it will simply exit the script with exit code 1 so that you do not have to handle the result with an if statement.
 
-    You can set `DX_SCRIPTS_ALWAYS_CONSENT` to `"true"` to always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
-
 === "Usage"
 
     **Usage:** `confirm_user_consent_safe <message>`
@@ -94,6 +94,10 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
     **Options:**
 
      * `<message>`: The message to print to the user - this is usually a question.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_ALWAYS_CONSENT`: If set to `"true"`, the script will always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
 
 === "Return codes"
 
@@ -123,8 +127,6 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
 
     If the user does not consent, it will simply exit the script with exit code 1 so that you do not have to handle the result with an if statement.
 
-    You can set `DX_SCRIPTS_ALWAYS_CONSENT` to `"true"` to always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
-
 === "Usage"
 
     **Usage:** `confirm_user_consent_dangerous <message>`
@@ -132,6 +134,10 @@ See [`prompts.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/pro
     **Options:**
 
      * `<message>`: The message to print to the user - this is usually a question.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_ALWAYS_CONSENT`: If set to `"true"`, the script will always consent to the prompt. This is useful for testing or if you want to skip the prompt in certain situations.
 
 === "Return codes"
 

@@ -51,13 +51,14 @@ fi
 # These should all be prefixed with '_'
 
 function _format_docker_compose_status {
-    local docker_compose_relative_path="${1}"
+    local docker_compose_relative_path
+    docker_compose_relative_path="$(require_config_value DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH)"
 
     printf "\033[0;90m┌──────────────────────────────────────────┬────────────┬───────────┬───────────┬──────────────────────────────────────┐\033[0;0m\n"
     printf "\033[0;90m│\033[1;37m Service                                  \033[0;90m│\033[1;37m State      \033[0;90m│\033[1;37m Exit code \033[0;90m│\033[1;37m Health    \033[0;90m│\033[1;37m Message                              \033[0;90m│\033[0;0m\n"
     printf "\033[0;90m├──────────────────────────────────────────┼────────────┼───────────┼───────────┼──────────────────────────────────────┤\033[0;0m\n"
 
-    run_docker_compose "${docker_compose_relative_path}" ps --all --format json --no-trunc |
+    run_docker_compose ps --all --format json --no-trunc |
         while IFS= read -r line; do
             # The name of the service - 40 characters max
             service="$(echo "${line}" | jq -r .Service)"
@@ -141,7 +142,13 @@ function run_docker_compose {
     local current_project_directory
     current_project_directory="$(get_current_project_directory)"
 
-    local docker_compose_path="${current_project_directory}/${1}"
+    local docker_compose_relative_path
+    docker_compose_relative_path="$(require_config_value DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH)"
+
+    local additional_args
+    additional_args="$(get_config_value DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS)"
+
+    local docker_compose_path="${current_project_directory}/${docker_compose_relative_path}"
 
     local env_path
     env_path="${current_project_directory}/.env"
@@ -155,19 +162,20 @@ function run_docker_compose {
     fi
 
     (
+        # We explicitly want additional_args to be tokenized
+        # shellcheck disable=SC2086
         cd "${current_project_directory}" &&
         docker compose \
             --file "${docker_compose_path}" \
             --env-file "${env_path}" \
-            "${@:2}"
+            ${additional_args} \
+            "${@}"
     )
 }
 
 function is_docker_compose_project_running {
-    local docker_compose_relative_path="${1}"
-
     # shellcheck disable=SC2310
-    if [[ -n "$(run_docker_compose "${docker_compose_relative_path}" ps --quiet || true)" ]]; then
+    if [[ -n "$(run_docker_compose ps --quiet || true)" ]]; then
         return 0
     else
         return 1
@@ -175,11 +183,11 @@ function is_docker_compose_project_running {
 }
 
 function docker_clean_volumes {
-    local docker_compose_relative_path="${1}"
-    local prefix="${2}"
+    local prefix
+    prefix="$(require_config_value "COMPOSE_PROJECT_NAME")"
 
     # Make sure the project is not running
-    if is_docker_compose_project_running "${docker_compose_relative_path}"; then
+    if is_docker_compose_project_running; then
         log_error "Docker Compose project is running - please stop it before cleaning up volumes"
         return 1
     fi
@@ -213,107 +221,98 @@ function docker_clean_volumes {
 }
 
 function docker_compose_down {
-    local docker_compose_relative_path="${1}"
-    local container_name="${2:-}"
+    local container_name="${1:-}"
 
     if [[ -z "${container_name}" ]]; then
         log_info "Bringing down all Docker containers..."
-        run_docker_compose "${docker_compose_relative_path}" down --remove-orphans
+        run_docker_compose down --remove-orphans
     else
         log_info "Bringing down Docker container '${container_name}'..."
-        run_docker_compose "${docker_compose_relative_path}" down --remove-orphans "${container_name}"
+        run_docker_compose down --remove-orphans "${container_name}"
     fi
 }
 
 function docker_compose_up {
-    local docker_compose_relative_path="${1}"
-    local container_name="${2:-}"
+    local container_name="${1:-}"
 
     log_info "Pulling Docker images..."
 
-    run_docker_compose "${docker_compose_relative_path}" pull
+    run_docker_compose pull
 
     log_info "Building Docker images..."
 
-    run_docker_compose "${docker_compose_relative_path}" build
+    run_docker_compose build
     
     if [[ -z "${container_name}" ]]; then
         log_info "Bringing up all Docker containers..."
-        run_docker_compose "${docker_compose_relative_path}" up --detach
+        run_docker_compose up --detach
     else
         log_info "Bringing up Docker container '${container_name}'..."
-        run_docker_compose "${docker_compose_relative_path}" up --detach "${container_name}"
+        run_docker_compose up --detach "${container_name}"
     fi
 }
 
 function docker_compose_restart {
-    local docker_compose_relative_path="${1}"
-    local container_name="${2:-}"
+    local container_name="${1:-}"
 
-    docker_compose_down "${docker_compose_relative_path}" "${container_name}"
-    docker_compose_up "${docker_compose_relative_path}" "${container_name}"
+    docker_compose_down "${container_name}"
+    docker_compose_up "${container_name}"
 }
 
 function tail_docker_compose_logs {
-    local docker_compose_relative_path="${1}"
-    local container_name="${2:-}"
+    local container_name="${1:-}"
 
     if [[ -z "${container_name}" ]]; then
         log_info "Tailing logs for all Docker containers..."
-        run_docker_compose "${docker_compose_relative_path}" logs --follow
+        run_docker_compose logs --follow
     else
         log_info "Tailing logs for Docker container '${container_name}'..."
-        run_docker_compose "${docker_compose_relative_path}" logs --follow "${container_name}"
+        run_docker_compose logs --follow "${container_name}"
     fi
 }
 
 function exec_docker_compose_shell {
-    local docker_compose_relative_path="${1}"
-    local container_name="${2}"
-    local command="${3:-}"
+    local container_name="${1}"
+    local command="${2:-}"
 
-    if run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" 'test -f /bin/bash' 2>&1 >/dev/null; then
+    if run_docker_compose exec -it "${container_name}" 'test -f /bin/bash' 2>&1 >/dev/null; then
         # Run BASH if we have it
         if [[ -z "${command}" ]]; then
-            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/bash
+            run_docker_compose exec -it "${container_name}" /bin/bash
         else
-            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/bash -c "${command}"
+            run_docker_compose exec -it "${container_name}" /bin/bash -c "${command}"
         fi
     else
         # Otherwise, fall back to whatever /bin/sh is
         if [[ -z "${command}" ]]; then
-            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/sh
+            run_docker_compose exec -it "${container_name}" /bin/sh
         else
-            run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/sh -c "${command}"
+            run_docker_compose exec -it "${container_name}" /bin/sh -c "${command}"
         fi
     fi
 }
 
 function print_docker_compose_status {
-    local docker_compose_relative_path="${1}"
-
     if [[ "$(tput cols || true)" -lt 120 ]]; then
-        die "Please resize your terminal to at least 120 columns wide"
+        die_error "Please resize your terminal to at least 100 columns wide"
     fi
 
     # We do this so that it doesn't print slowly
     local output
-    output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
+    output="$(_format_docker_compose_status)"
 
     printf "%b\n" "${output}"
 }
 
 function watch_docker_compose_status {
-    local docker_compose_relative_path="${1}"
-
     if [[ "$(tput cols || printf "0" || true)" -lt 120 ]]; then
-        die "Please resize your terminal to at least 120 columns wide"
+        die_error "Please resize your terminal to at least 100 columns wide"
     fi
 
     local output
 
     while true; do
-        output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
+        output="$(_format_docker_compose_status)"
         clear
         printf "%b\n\n\033[0;90mLast updated %s (updates every 5 seconds)\033[0;0m\n" "${output}" "$(date "+%H:%M:%S %Z" || true)"
         sleep 5

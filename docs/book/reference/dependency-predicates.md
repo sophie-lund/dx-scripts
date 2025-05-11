@@ -48,6 +48,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
 
      This function does not take any arguments.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return:
@@ -74,6 +78,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
     **Usage:** `is_macos`
 
      This function does not take any arguments.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
@@ -106,6 +114,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
         * `linux`
         * `macos`
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return:
@@ -137,6 +149,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
 
      * `<command>`: The command for which to check.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return:
@@ -164,6 +180,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
 
     This function does not take any arguments.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return:
@@ -190,6 +210,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
     **Usage:** `is_xcode_installed`
 
     This function does not take any arguments.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
@@ -219,6 +243,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
 
     This function does not take any arguments.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.
@@ -242,6 +270,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
     **Usage:** `is_nvm_installed`
 
     This function does not take any arguments.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
@@ -270,6 +302,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
 
     This function does not take any arguments.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return:
@@ -296,6 +332,10 @@ See [`dependency-predicates.bash`](https://github.com/sophie-lund/dx-scripts/blo
     **Usage:** `are_docker_engine_metrics_enabled`
 
     This function does not take any arguments.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 

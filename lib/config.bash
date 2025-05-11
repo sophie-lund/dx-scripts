@@ -72,12 +72,13 @@ function _load_config_into_env {
 
 function get_config_value {
     local key="${1}"
+    local default="${2:-}"
 
     if [[ -z "${IS_CONFIG_LOADED:-}" ]]; then
         _load_config_into_env
     fi
 
-    local variable_value="${!key:-}"
+    local variable_value="${!key:-${default}}"
 
     printf "%s" "${variable_value}"
 }

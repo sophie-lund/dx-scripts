@@ -41,29 +41,31 @@ See [`aws.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/aws.bas
     It does this by looking at the `~/.aws/config` file and filtering the names by the prefix provided.
 
     ```bash
-    $ list_aws_environment_names my-project
+    $ list_aws_environment_names
     development
     staging
     production
     ```
 
-    You can override the path to the AWS config file by setting the `DX_SCRIPTS_AWS_CONFIG_PATH` environment variable.
+    You need to provide the `DX_SCRIPTS_AWS_PROFILE_PREFIX` environment variable for this to work. It is a prefix for profiles to filter by.
 
 === "Usage"
 
-    **Usage:** `list_aws_environment_names <prefix>`
+    **Usage:** `list_aws_environment_names`
 
-    **Options:**
+=== "Environment variables"
 
-     * `<prefix>`: The prefix to filter the environment names by. This is usually the name of the project.
+    * `DX_SCRIPTS_AWS_PROFILE_PREFIX`: The prefix to filter the environment names by. This is usually the name of the project. *(required)*
+    * `DX_SCRIPTS_AWS_CONFIG_PATH`: The path to the AWS config file. If not set, it will default to `~/.aws/config`.
 
 === "Return codes"
 
     It will return:
 
      * 0 on success.
-     * 1 if there is no `~/.aws/config` file.
-     * 2 if there are no profiles starting with `<prefix>`.
+     * 1 if `DX_SCRIPTS_AWS_PROFILE_PREFIX` is not set.
+     * 2 if there is no `~/.aws/config` file.
+     * 3 if there are no profiles starting with `<prefix>`.
 
 === "Errors"
 
@@ -76,19 +78,22 @@ See [`aws.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/aws.bas
     Logs into an AWS SSO environment.
 
     ```bash
-    $ login_to_aws_sso my-project development
+    $ login_to_aws_sso development
     ```
 
     See [`list_aws_environment_names`](#list_aws_environment_names) for more information on how environments are resolved.
 
 === "Usage"
 
-    **Usage:** `login_to_aws_sso <prefix> <environment>`
+    **Usage:** `login_to_aws_sso <environment>`
 
     **Options:**
 
-     * `<prefix>`: The prefix to filter the environment names by. This is usually the name of the project.
      * `<environment>`: The name of the environment to log in to.
+
+=== "Environment variables"
+
+    See [`list_aws_environment_names`](#list_aws_environment_names) for more information on the environment variables used.
 
 === "Return codes"
 
@@ -96,9 +101,10 @@ See [`aws.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/aws.bas
     It will return:
     
      * 0 on success.
-     * 1 if there is no `~/.aws/config` file. *(from [`list_aws_environment_names`](#list_aws_environment_names))*
-     * 2 if there are no profiles starting with `<prefix>`. *(from [`list_aws_environment_names`](#list_aws_environment_names))*
-     * 3 if the environment is not found.
+     * 1 if `DX_SCRIPTS_AWS_PROFILE_PREFIX` is not set. *(from [`list_aws_environment_names`](#list_aws_environment_names))*
+     * 2 if there is no `~/.aws/config` file. *(from [`list_aws_environment_names`](#list_aws_environment_names))*
+     * 3 if there are no profiles starting with `<prefix>`. *(from [`list_aws_environment_names`](#list_aws_environment_names))*
+     * 4 if the environment is not found.
 
 === "Errors"
 
@@ -124,6 +130,10 @@ See [`aws.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/aws.bas
 
      * `<endpoint url>`: The URL to log into.
      * `<region>`: The AWS region to use. For most endpoints, this doesn't matter.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 

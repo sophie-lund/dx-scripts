@@ -39,20 +39,25 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Runs the `docker compose` command with forwarded arguments, but makes sure that the env file and the correct `docker-compose.yml` file are used.
 
     ```bash
-    run_docker_compose docker/docker-compose.yml build
+    run_docker_compose build
     ```
 
 === "Usage"
 
-    **Usage:** `run_docker_compose <compose file> [args...]`
+    **Usage:** `run_docker_compose [args...]`
 
-     This function takes one positional argument, the path of `docker-compose.yml` relative to your project directory. It then takes any number of arguments that are forwarded to the `docker compose` command.
+     It takes any number of arguments that are forwarded to the `docker compose` command.
 
      For example, in this command `ps -a` are forwarded to `docker compose`:
 
      ```bash
-     run_docker_compose docker/docker-compose.yml ps -a
+     run_docker_compose ps -a
      ```
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -63,6 +68,7 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     It will exit the script with exit code 1 if:
      * The env file does not exist.
      * `COMPOSE_PROJECT_NAME` is not set in the env file for the project.
+     * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH` is not set in the env file for the project.
 
 ## `is_docker_compose_project_running`
 
@@ -71,14 +77,17 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Checks if the Docker Compose project is currently running. If there is at least one container running, it will consider the project to be running.
 
     ```bash
-    is_docker_compose_project_running docker/docker-compose.yml
+    is_docker_compose_project_running
     ```
 
 === "Usage"
 
-    **Usage:** `is_docker_compose_project_running <compose file>`
+    **Usage:** `is_docker_compose_project_running`
 
-     This function takes one positional argument, the path of `docker-compose.yml` relative to your project directory.
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -95,14 +104,17 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Deletes any volumes that are used by the project. This only works when the project is not running. It will ask for user confirmation.
 
     ```bash
-    docker_clean_volumes docker/docker-compose.yml
+    docker_clean_volumes
     ```
 
 === "Usage"
 
-    **Usage:** `docker_clean_volumes <compose file>`
+    **Usage:** `docker_clean_volumes`
 
-     This function takes one positional argument, the path of `docker-compose.yml` relative to your project directory.
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -119,24 +131,28 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Brings down Docker Compose containers. It can either bring down just one container by name:
 
     ```bash
-    docker_compose_down docker/docker-compose.yml my-container
+    docker_compose_down my-container
     ```
 
     Or all of them at once by omitting the name:
 
     ```bash
-    docker_compose_down docker/docker-compose.yml
+    docker_compose_down
     ```
 
 === "Usage"
 
-    **Usage:** `docker_compose_down <compose file> [container name]`
+    **Usage:** `docker_compose_down [container name]`
 
     **Options:**
 
-     * `<compose file`>: The path of `docker-compose.yml` relative to your project directory.
      * `[container name]`: The name of the container to bring down *(optional)*.
         * If omitted, all containers will be brought down.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -153,26 +169,30 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Brings up Docker Compose containers. It can either bring up just one container by name:
 
     ```bash
-    docker_compose_up docker/docker-compose.yml my-container
+    docker_compose_up my-container
     ```
 
     Or all of them at once by omitting the name:
 
     ```bash
-    docker_compose_up docker/docker-compose.yml
+    docker_compose_up
     ```
 
     It will also re-build or pull any images that are used in the project.
 
 === "Usage"
 
-    **Usage:** `docker_compose_up <compose file> [container name]`
+    **Usage:** `docker_compose_up [container name]`
 
     **Options:**
 
-     * `<compose file>`: The path of `docker-compose.yml` relative to your project directory.
      * `[container name]`: The name of the container to bring up *(optional)*.
         * If omitted, all containers will be brought up.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -189,26 +209,30 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Restarts Docker Compose containers. It can either restart just one container by name:
 
     ```bash
-    docker_compose_restart docker/docker-compose.yml my-container
+    docker_compose_restart my-container
     ```
 
     Or all of them at once by omitting the name:
 
     ```bash
-    docker_compose_restart docker/docker-compose.yml
+    docker_compose_restart
     ```
 
     This is equivalent to calling `docker_compose_down` and then `docker_compose_up` immediately after.
 
 === "Usage"
 
-    **Usage:** `docker_compose_restart <compose file> [container name]`
+    **Usage:** `docker_compose_restart [container name]`
 
     **Options:**
 
-     * `<compose file`>: The path of `docker-compose.yml` relative to your project directory.
      * `[container name]`: The name of the container to restart *(optional)*.
         * If omitted, all containers will be restarted.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -225,24 +249,28 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Watches the logs of Docker Compose containers. You can either watch the logs of just one container by name:
 
     ```bash
-    tail_docker_compose_logs docker/docker-compose.yml my-container
+    tail_docker_compose_logs my-container
     ```
 
     Or all of them at once by omitting the name:
 
     ```bash
-    tail_docker_compose_logs docker/docker-compose.yml
+    tail_docker_compose_logs
     ```
 
 === "Usage"
 
-    **Usage:** `tail_docker_compose_logs <compose file> [container name]`
+    **Usage:** `tail_docker_compose_logs [container name]`
 
     **Options:**
 
-     * `<compose file>`: The path of `docker-compose.yml` relative to your project directory.
      * `[container name]`: The name of the container to watch *(optional)*.
         * If omitted, all containers will be watched.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -259,13 +287,13 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Enters an interactive shell in a Docker Compose container.
 
     ```bash
-    exec_docker_compose_shell docker/docker-compose.yml my-container
+    exec_docker_compose_shell my-container
     ```
 
     You can also pass in a command to run in the container:
 
     ```bash
-    exec_docker_compose_shell docker/docker-compose.yml my-container "echo hello, world"
+    exec_docker_compose_shell my-container "echo hello, world"
     ```
 
     It must be passed in as a single string argument, like above.
@@ -274,14 +302,18 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
 
 === "Usage"
 
-    **Usage:** `exec_docker_compose_shell <compose file> <container name> [command]`
+    **Usage:** `exec_docker_compose_shell <container name> [command]`
 
     **Options:**
 
-     * `<compose file>`: The path of `docker-compose.yml` relative to your project directory.
      * `<container name>`: The name of the container to shell into.
      * `[command]`: The command to run in the container *(optional)*.
         * If omitted, an interactive shell will be opened.
+
+=== "Environment variables"
+
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -298,16 +330,17 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Prints the status of all of the containers in a Docker Compose project.
 
     ```bash
-    print_docker_compose_status docker/docker-compose.yml
+    print_docker_compose_status
     ```
 
 === "Usage"
 
-    **Usage:** `print_docker_compose_status <compose file>`
+    **Usage:** `print_docker_compose_status`
 
-    **Options:**
+=== "Environment variables"
 
-     * `<compose file>`: The path of `docker-compose.yml` relative to your project directory.
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 
@@ -326,16 +359,17 @@ See [`docker.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/dock
     Watches the status of all of the containers in a Docker Compose project, updating every 5 seconds.
 
     ```bash
-    watch_docker_compose_status docker/docker-compose.yml
+    watch_docker_compose_status
     ```
 
 === "Usage"
 
-    **Usage:** `watch_docker_compose_status <compose file>`
+    **Usage:** `watch_docker_compose_status`
 
-    **Options:**
+=== "Environment variables"
 
-     * `<compose file>`: The path of `docker-compose.yml` relative to your project directory.
+    * `DX_SCRIPTS_DOCKER_COMPOSE_RELATIVE_PATH`: The path to the `docker-compose.yml` file relative to the current project directory. *(required)*
+    * `DX_SCRIPTS_DOCKER_COMPOSE_ADDITIONAL_ARGS`: Any additional arguments to pass to the `docker compose` command. *(optional)*
 
 === "Return codes"
 

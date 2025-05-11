@@ -51,6 +51,10 @@ See [`logging.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/log
 
      * `<message>`: The message to log.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.
@@ -81,6 +85,10 @@ See [`logging.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/log
     **Options:**
 
      * `<message>`: The message to log.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
@@ -113,6 +121,10 @@ See [`logging.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/log
 
      * `<message>`: The message to log.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.
@@ -143,6 +155,10 @@ See [`logging.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/log
     **Options:**
 
      * `<message>`: The message to log.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
@@ -289,6 +305,10 @@ See [`logging.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/log
      * `"title"` must print a string which will be printed to the console as the message.
      * `"enabled"` must print a string which is either `"true"` or `"false"`. This will determine if the step is run or not.
      * `"run"` is where the actual work is done. This function will be run if the `"enabled"` case returns `"true"`. 
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 

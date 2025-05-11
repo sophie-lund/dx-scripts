@@ -59,6 +59,10 @@ See [`cxx.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/cxx.bas
         * `debug:fuzz`: A build with debug symbols, no optimizations, and fuzzing instrumentation.
         * `release`: A build with no debug symbols and optimizations enabled.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will return 0 if the build was successful and a non-zero value if it was not.

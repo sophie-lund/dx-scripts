@@ -31,24 +31,27 @@ function teardown {
 
 @test "aws_list_profiles > no config file" {
     DX_SCRIPTS_AWS_CONFIG_PATH="${TEST_TEMP_DIR}/does-not-exist"
+    DX_SCRIPTS_AWS_PROFILE_PREFIX="test-"
     
-    run list_aws_environment_names "test-"
+    run list_aws_environment_names
 
     assert_failure
 }
 
 @test "aws_list_profiles > empty config file" {
     DX_SCRIPTS_AWS_CONFIG_PATH="${TEST_TEMP_DIR}/empty"
+    DX_SCRIPTS_AWS_PROFILE_PREFIX="test-"
 
     touch "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     
-    run list_aws_environment_names "test-"
+    run list_aws_environment_names
 
     assert_failure
 }
 
 @test "aws_list_profiles > file with profile with wrong prefix" {
     DX_SCRIPTS_AWS_CONFIG_PATH="${TEST_TEMP_DIR}/wrong-prefix"
+    DX_SCRIPTS_AWS_PROFILE_PREFIX="test-"
 
     printf "[profile test2-test]\n" > "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_session = test\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
@@ -60,13 +63,14 @@ function teardown {
     printf "sso_region = us-east-1\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_registration_scopes = sso:account:access\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
 
-    run list_aws_environment_names "test-"
+    run list_aws_environment_names
 
     assert_failure
 }
 
 @test "aws_list_profiles > file with profile with right prefix" {
     DX_SCRIPTS_AWS_CONFIG_PATH="${TEST_TEMP_DIR}/right-prefix"
+    DX_SCRIPTS_AWS_PROFILE_PREFIX="test-"
 
     printf "[profile test-test]\n" > "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_session = test\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
@@ -78,7 +82,7 @@ function teardown {
     printf "sso_region = us-east-1\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_registration_scopes = sso:account:access\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
 
-    run list_aws_environment_names "test-"
+    run list_aws_environment_names
 
     assert_success
     assert_output "test"
@@ -86,6 +90,7 @@ function teardown {
 
 @test "aws_list_profiles > file with profile with multiple environments" {
     DX_SCRIPTS_AWS_CONFIG_PATH="${TEST_TEMP_DIR}/multiple-environments"
+    DX_SCRIPTS_AWS_PROFILE_PREFIX="test-"
 
     printf "[profile test-development]\n" > "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_session = test\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
@@ -102,7 +107,7 @@ function teardown {
     printf "sso_region = us-east-1\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
     printf "sso_registration_scopes = sso:account:access\n" >> "${DX_SCRIPTS_AWS_CONFIG_PATH}"
 
-    run list_aws_environment_names "test-"
+    run list_aws_environment_names
 
     assert_success
     printf 'development\nproduction' | assert_output

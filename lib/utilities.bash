@@ -81,8 +81,11 @@ function capture_command_output {
 }
 
 function get_current_project_directory {
-    if [[ -n "${DX_SCRIPTS_PROJECT_DIRECTORY:-}" ]]; then
-        printf "%s" "${DX_SCRIPTS_PROJECT_DIRECTORY}"
+    local override
+    override="$(get_config_value DX_SCRIPTS_PROJECT_DIRECTORY)"
+
+    if [[ -n "${override}" ]]; then
+        printf "%s" "${override}"
         return 0
     fi
 

@@ -61,7 +61,7 @@ function _confirm_user_consent_helper {
         die "Message must be provided"
     fi
 
-    if [[ "${DX_SCRIPTS_ALWAYS_CONSENT:-}" == "true" ]]; then
+    if [[ "$(get_config_value DX_SCRIPTS_ALWAYS_CONSENT || true)" == "true" ]]; then
         log_warning "DX_SCRIPTS_ALWAYS_CONSENT is set to true - skipping user consent"
         return 0
     fi

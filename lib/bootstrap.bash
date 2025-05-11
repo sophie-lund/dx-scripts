@@ -203,7 +203,7 @@ function ensure_dependencies_installed {
 
         sudo apt-get update
 
-        if [[ "${DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE:-}" != "true" ]]; then
+        if [[ "$(get_config_value DX_SCRIPTS_DISABLE_BOOTSTRAP_UPGRADE || true)" != "true" ]]; then
             sudo apt-get upgrade -y
         fi
         
@@ -222,7 +222,9 @@ function ensure_aws_profile_configured {
     local profile_name="${6}"
 
     local error_message=""
-    local aws_config_path="${HOME}/.aws/config"
+    
+    local aws_config_path
+    aws_config_path="$(get_config_value DX_SCRIPTS_AWS_CONFIG_PATH "${HOME}/.aws/config")"
 
     if [[ ! -f "${aws_config_path}" ]]; then
         error_message="AWS CLI config file not found at ${aws_config_path}"

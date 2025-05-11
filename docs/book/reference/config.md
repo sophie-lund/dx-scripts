@@ -54,6 +54,10 @@ See [`config.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/conf
 
      * `<key>`: The name of the environment variable.
 
+=== "Environment variables"
+
+    This function does not use any environment variables.
+
 === "Return codes"
 
     It will always return 0.
@@ -85,6 +89,10 @@ See [`config.bash`](https://github.com/sophie-lund/dx-scripts/blob/main/lib/conf
     **Options:**
 
      * `<key>`: The name of the environment variable.
+
+=== "Environment variables"
+
+    This function does not use any environment variables.
 
 === "Return codes"
 
