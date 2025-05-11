@@ -230,7 +230,7 @@ function _generate_coverage_report() {
         __cxx_global_var_init \
         --ignore-errors unsupported \
         --rc derive_function_end_line=0; then
-        die_error "Failed to gather coverage info"
+        die "Failed to gather coverage info"
     fi
 
 	if ! lcov \
@@ -244,13 +244,13 @@ function _generate_coverage_report() {
         --output-file "${build_directory}/coverage.info" \
         --rc derive_function_end_line=0 \
         --ignore-errors unused; then
-        die_error "Failed to filter coverage info"
+        die "Failed to filter coverage info"
     fi
 
 	if ! genhtml "${build_directory}/coverage.info" \
         --output-directory "${build_directory}/coverage-report" \
         --ignore-errors inconsistent,corrupt,category; then
-        die_error "Failed to generate HTML coverage report"
+        die "Failed to generate HTML coverage report"
     fi
 
     log_info "Coverage report available at: file://${build_directory}/coverage-report/index.html"

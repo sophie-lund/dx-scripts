@@ -272,7 +272,7 @@ function exec_docker_compose_shell {
     local container_name="${2}"
     local command="${3:-}"
 
-    if run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" 'test -f /bin/bash'; then
+    if run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" 'test -f /bin/bash' 2>&1 >/dev/null; then
         # Run BASH if we have it
         if [[ -z "${command}" ]]; then
             run_docker_compose "${docker_compose_relative_path}" exec -it "${container_name}" /bin/bash
@@ -292,22 +292,22 @@ function exec_docker_compose_shell {
 function print_docker_compose_status {
     local docker_compose_relative_path="${1}"
 
-    if [[ "$(tput cols || true)" -lt 100 ]]; then
-        die_error "Please resize your terminal to at least 100 columns wide"
+    if [[ "$(tput cols || true)" -lt 120 ]]; then
+        die "Please resize your terminal to at least 120 columns wide"
     fi
 
     # We do this so that it doesn't print slowly
     local output
     output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
 
-    printf "%b" "${output}"
+    printf "%b\n" "${output}"
 }
 
 function watch_docker_compose_status {
     local docker_compose_relative_path="${1}"
 
-    if [[ "$(tput cols || printf "0" || true)" -lt 100 ]]; then
-        die_error "Please resize your terminal to at least 100 columns wide"
+    if [[ "$(tput cols || printf "0" || true)" -lt 120 ]]; then
+        die "Please resize your terminal to at least 120 columns wide"
     fi
 
     local output
@@ -315,7 +315,7 @@ function watch_docker_compose_status {
     while true; do
         output="$(_format_docker_compose_status "${docker_compose_relative_path}")"
         clear
-        printf "%b\n\033[0;90mLast updated %s (updates every 5 seconds)\033[0;0m" "${output}" "$(date "+%H:%M:%S %Z" || true)"
+        printf "%b\n\n\033[0;90mLast updated %s (updates every 5 seconds)\033[0;0m\n" "${output}" "$(date "+%H:%M:%S %Z" || true)"
         sleep 5
     done
 }
