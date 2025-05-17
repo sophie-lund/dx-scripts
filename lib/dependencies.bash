@@ -309,6 +309,41 @@ function dependency_go {
     esac
 }
 
+function dependency_go_delve {
+    case "${1}" in
+        "get-name")
+            printf "Go Delve"
+            ;;
+        "list-dependencies")
+            printf "dependency_go"
+            ;;
+        "check-enabled")
+            printf "true"
+            ;;
+        "check-installed")
+            if [[ -f "$(go env GOPATH || true)/bin/dlv" ]]; then
+                printf "true"
+            else
+                printf "false"
+            fi
+            ;;
+        "get-install-command")
+            printf "go install github.com/go-delve/delve/cmd/dlv@latest"
+            ;;
+        "get-brew-formula")
+            ;;
+        "get-apt-package")
+            ;;
+        "get-fallback-instructions-url")
+            ;;
+        "get-fallback-instructions")
+            ;;
+        *)
+            die "Unknown command for dependency: '${1}'"
+            ;;
+    esac
+}
+
 function dependency_jq {
     case "${1}" in
         "get-name")
