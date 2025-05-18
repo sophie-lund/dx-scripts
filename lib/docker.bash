@@ -295,7 +295,7 @@ function exec_docker_compose_shell {
 
 function print_docker_compose_status {
     if [[ "$(tput cols || true)" -lt 120 ]]; then
-        die_error "Please resize your terminal to at least 100 columns wide"
+        die "Please resize your terminal to at least 100 columns wide"
     fi
 
     # We do this so that it doesn't print slowly
@@ -307,7 +307,7 @@ function print_docker_compose_status {
 
 function watch_docker_compose_status {
     if [[ "$(tput cols || printf "0" || true)" -lt 120 ]]; then
-        die_error "Please resize your terminal to at least 100 columns wide"
+        die "Please resize your terminal to at least 100 columns wide"
     fi
 
     local output
