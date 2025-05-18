@@ -344,6 +344,41 @@ function dependency_go_delve {
     esac
 }
 
+function dependency_godoc {
+    case "${1}" in
+        "get-name")
+            printf "Godoc"
+            ;;
+        "list-dependencies")
+            printf "dependency_go"
+            ;;
+        "check-enabled")
+            printf "true"
+            ;;
+        "check-installed")
+            if [[ -f "$(go env GOPATH || true)/bin/godoc" ]]; then
+                printf "true"
+            else
+                printf "false"
+            fi
+            ;;
+        "get-install-command")
+            printf "go install golang.org/x/tools/cmd/godoc@latest"
+            ;;
+        "get-brew-formula")
+            ;;
+        "get-apt-package")
+            ;;
+        "get-fallback-instructions-url")
+            ;;
+        "get-fallback-instructions")
+            ;;
+        *)
+            die "Unknown command for dependency: '${1}'"
+            ;;
+    esac
+}
+
 function dependency_jq {
     case "${1}" in
         "get-name")
